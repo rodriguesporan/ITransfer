@@ -18,17 +18,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.appViewModel = model
-        binding.mainActivity = this
+        binding?.apply {
+            lifecycleOwner = this@MainActivity
+            appViewModel = model
+            mainActivity = this@MainActivity
+        }
+        binding?.appViewModel?.setContent(getString(R.string.hello_world))
     }
 
     fun sendEmail() {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "André")
-            putExtra(Intent.EXTRA_EMAIL, "andre@gmail")
-            putExtra(Intent.EXTRA_SUBJECT, "You have been hired")
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.email_msg))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
             type = "text/plain"
         }
 

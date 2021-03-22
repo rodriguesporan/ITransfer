@@ -2,4 +2,6 @@
     <string name="app_name">EmptyActivity</string>
     <string name="hello_world">Hello World</string>
     <string name="bye_world">Bye World</string>
+    <string name="email_msg">Congratulations André, you have been hired!!</string>
+    <string name="email_subject">You have been hired</string>
 </resources>
