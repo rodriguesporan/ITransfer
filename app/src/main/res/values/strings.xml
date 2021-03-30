@@ -4,4 +4,6 @@
     <string name="bye_world">Bye World</string>
     <string name="email_msg">Congratulations André, you have been hired!!</string>
     <string name="email_subject">You have been hired</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
