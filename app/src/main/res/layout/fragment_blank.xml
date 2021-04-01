@@ -49,12 +49,24 @@
                 android:id="@+id/send_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> blankFragment.sendEmail() }"
+                android:onClick="@{() -> blankFragment.sendEmail()}"
                 android:text="Send e-mail"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/go_next"
                 app:layout_constraintStart_toEndOf="@id/show_msg"
                 app:layout_constraintTop_toBottomOf="@id/txtView" />
+
+            <Button
+                android:id="@+id/go_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                app:layout_constraintStart_toEndOf="@id/send_email"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtView"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> blankFragment.goNext()}"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>

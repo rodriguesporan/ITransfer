@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.emptyactivity.databinding.FragmentBlankBinding
 import com.example.emptyactivity.model.AppViewModel
 
@@ -17,13 +18,13 @@ class BlankFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = FragmentBlankBinding.inflate(inflater)
+        val binding = FragmentBlankBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = this@BlankFragment
             blankFragment = this@BlankFragment
             appViewModel = viewModel
         }
-        binding?.appViewModel?.setContent(getString(R.string.hello_world))
+        binding.appViewModel?.setContent(getString(R.string.hello_world))
 
         return binding.root
     }
@@ -41,5 +42,9 @@ class BlankFragment : Fragment() {
         } catch (e: ActivityNotFoundException) {
             Log.d("INTENT", e.toString())
         }
+    }
+
+    fun goNext() {
+        findNavController().navigate(R.id.action_blankFragment_to_blankFragment2)
     }
 }
