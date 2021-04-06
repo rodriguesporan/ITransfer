@@ -31,7 +31,7 @@ class FirstFragment : Fragment() {
 
     fun changeMsg() {
         if (viewModel.content.value.equals(this.getString(R.string.hello_world))) {
-            viewModel.setContent(this.getString(R.string.bye_world))
+            viewModel.setContent(viewModel.secondGreeting.value.toString())
         } else {
             viewModel.setContent(this.getString(R.string.hello_world))
         }
