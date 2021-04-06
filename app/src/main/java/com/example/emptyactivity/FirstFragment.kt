@@ -10,23 +10,31 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.emptyactivity.databinding.FragmentBlankBinding
+import com.example.emptyactivity.databinding.FragmentFirstBinding
 import com.example.emptyactivity.model.AppViewModel
 
-class BlankFragment : Fragment() {
+class FirstFragment : Fragment() {
     private val viewModel: AppViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = FragmentBlankBinding.inflate(inflater, container, false)
+        val binding = FragmentFirstBinding.inflate(inflater, container, false)
         binding.apply {
-            lifecycleOwner = this@BlankFragment
-            blankFragment = this@BlankFragment
+            lifecycleOwner = this@FirstFragment
+            firstFragment = this@FirstFragment
             appViewModel = viewModel
         }
         binding.appViewModel?.setContent(getString(R.string.hello_world))
 
         return binding.root
+    }
+
+    fun changeMsg() {
+        if (viewModel.content.value.equals(this.getString(R.string.hello_world))) {
+            viewModel.setContent(this.getString(R.string.bye_world))
+        } else {
+            viewModel.setContent(this.getString(R.string.hello_world))
+        }
     }
 
     fun sendEmail() {
@@ -45,6 +53,6 @@ class BlankFragment : Fragment() {
     }
 
     fun goNext() {
-        findNavController().navigate(R.id.action_blankFragment_to_blankFragment2)
+        findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
     }
 }

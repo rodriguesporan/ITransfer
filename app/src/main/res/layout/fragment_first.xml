@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".BlankFragment">
+    tools:context=".FirstFragment">
 
     <data>
 
@@ -11,8 +11,8 @@
             type="com.example.emptyactivity.model.AppViewModel" />
 
         <variable
-            name="blankFragment"
-            type="com.example.emptyactivity.BlankFragment" />
+            name="firstFragment"
+            type="com.example.emptyactivity.FirstFragment" />
     </data>
 
     <FrameLayout
@@ -38,7 +38,7 @@
                 android:id="@+id/show_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> appViewModel.setContent(@string/bye_world)}"
+                android:onClick="@{() -> firstFragment.changeMsg()}"
                 android:text="Show message"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/send_email"
@@ -49,7 +49,7 @@
                 android:id="@+id/send_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> blankFragment.sendEmail()}"
+                android:onClick="@{() -> firstFragment.sendEmail()}"
                 android:text="Send e-mail"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/go_next"
@@ -65,7 +65,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtView"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="@{() -> blankFragment.goNext()}"
+                android:onClick="@{() -> firstFragment.goNext()}"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
