@@ -60,13 +60,12 @@
                 android:id="@+id/go_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Next"
-                app:layout_constraintStart_toEndOf="@id/send_email"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtView"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> firstFragment.goNext()}"
-                />
+                android:text="Next"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/send_email"
+                app:layout_constraintTop_toBottomOf="@id/txtView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>
