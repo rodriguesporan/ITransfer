@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.ocapi
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.emptyactivity.databinding.FragmentSecondBinding
-import com.example.emptyactivity.model.AppViewModel
+import com.example.ocapi.databinding.FragmentSecondBinding
+import com.example.ocapi.model.AppViewModel
 
 class SecondFragment : Fragment() {
     private val viewModel: AppViewModel by activityViewModels()

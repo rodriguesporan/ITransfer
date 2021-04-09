@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.ocapi
 
 import org.junit.Test
 

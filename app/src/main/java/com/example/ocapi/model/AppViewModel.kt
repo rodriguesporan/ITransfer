@@ -1,4 +1,4 @@
-package com.example.emptyactivity.model
+package com.example.ocapi.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

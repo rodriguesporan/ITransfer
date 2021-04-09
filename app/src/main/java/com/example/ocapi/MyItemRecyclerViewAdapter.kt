@@ -1,11 +1,11 @@
-package com.example.emptyactivity
+package com.example.ocapi
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.emptyactivity.dummy.DummyContent.DummyItem
+import com.example.ocapi.dummy.DummyContent.DummyItem
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].

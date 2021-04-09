@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="com.example.emptyactivity.FirstFragment"
+        android:name="com.example.ocapi.FirstFragment"
         android:label="First Fragment"
         tools:layout="@layout/fragment_first" >
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.example.emptyactivity.SecondFragment"
+        android:name="com.example.ocapi.SecondFragment"
         android:label="Second Fragment"
         tools:layout="@layout/fragment_second" />
     <fragment
         android:id="@+id/itemFragment"
-        android:name="com.example.emptyactivity.ItemFragment"
+        android:name="com.example.ocapi.ItemFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_item_list" />
 </navigation>

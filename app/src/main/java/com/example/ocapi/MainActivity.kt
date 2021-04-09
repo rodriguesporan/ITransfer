@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.ocapi
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

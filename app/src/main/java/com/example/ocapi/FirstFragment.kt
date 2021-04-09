@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.ocapi
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.emptyactivity.databinding.FragmentFirstBinding
-import com.example.emptyactivity.model.AppViewModel
+import com.example.ocapi.databinding.FragmentFirstBinding
+import com.example.ocapi.model.AppViewModel
 
 class FirstFragment : Fragment() {
     private val viewModel: AppViewModel by activityViewModels()

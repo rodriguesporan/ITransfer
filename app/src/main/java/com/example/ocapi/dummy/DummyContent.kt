@@ -1,4 +1,4 @@
-package com.example.emptyactivity.dummy
+package com.example.ocapi.dummy
 
 import java.util.ArrayList
 import java.util.HashMap

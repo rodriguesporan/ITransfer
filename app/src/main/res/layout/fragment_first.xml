@@ -8,11 +8,11 @@
 
         <variable
             name="appViewModel"
-            type="com.example.emptyactivity.model.AppViewModel" />
+            type="com.example.ocapi.model.AppViewModel" />
 
         <variable
             name="firstFragment"
-            type="com.example.emptyactivity.FirstFragment" />
+            type="com.example.ocapi.FirstFragment" />
     </data>
 
     <FrameLayout

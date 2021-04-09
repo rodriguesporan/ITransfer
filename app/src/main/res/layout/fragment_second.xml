@@ -7,11 +7,11 @@
 
         <variable
             name="appViewModel"
-            type="com.example.emptyactivity.model.AppViewModel" />
+            type="com.example.ocapi.model.AppViewModel" />
 
         <variable
             name="secondFragment"
-            type="com.example.emptyactivity.SecondFragment" />
+            type="com.example.ocapi.SecondFragment" />
 
     </data>
 
