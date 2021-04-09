@@ -5,4 +5,7 @@
     <string name="email_msg">Congratulations André, you have been hired!!</string>
     <string name="email_subject">You have been hired</string>
     <string name="hello_second_fragment">Hello second fragment</string>
+    <string name="home">Home</string>
+    <string name="list">List</string>
+    <string name="scanner">Scanner</string>
 </resources>
