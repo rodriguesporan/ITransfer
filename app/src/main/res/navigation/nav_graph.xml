@@ -19,4 +19,9 @@
         android:name="com.example.emptyactivity.SecondFragment"
         android:label="Second Fragment"
         tools:layout="@layout/fragment_second" />
+    <fragment
+        android:id="@+id/itemFragment"
+        android:name="com.example.emptyactivity.ItemFragment"
+        android:label="fragment_item_list"
+        tools:layout="@layout/fragment_item_list" />
 </navigation>
