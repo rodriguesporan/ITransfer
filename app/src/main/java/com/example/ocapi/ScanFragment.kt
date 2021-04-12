@@ -9,10 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,10 +18,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.ocapi.databinding.FragmentScanBinding
 import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
+/** Helper type alias used for analysis use case callbacks */
+typealias LumaListener = (luma: Double) -> Unit
 
 class ScanFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
@@ -48,11 +49,7 @@ class ScanFragment : Fragment() {
             )
         }
 
-        // Set up the listener for take photo button
-//        binding.cameraCaptureButton.setOnClickListener { takePhoto() }
-
         outputDirectory = getOutputDirectory(requireContext())
-
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -95,16 +92,16 @@ class ScanFragment : Fragment() {
     }
 
     private fun startCamera() {
-//        This is used to bind the lifecycle of cameras to the lifecycle owner
-//        This eliminates the task of opening and closing the camera since CameraX is lifecycle-aware
+        /**
+         * This is used to bind the lifecycle of cameras to the lifecycle owner
+         * This eliminates the task of opening and closing the camera since CameraX is lifecycle-aware
+         * */
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider = cameraProviderFuture.get()
             bindPreview(cameraProvider)
         }, ContextCompat.getMainExecutor(requireContext())) // This returns an Executor that runs on the main thread
-
-        imageCapture = ImageCapture.Builder().build()
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
@@ -114,13 +111,23 @@ class ScanFragment : Fragment() {
                     it.setSurfaceProvider(binding.previewView.surfaceProvider)
                 }
 
+        imageCapture = ImageCapture.Builder().build()
+
+        val imageAnalyzer = ImageAnalysis.Builder()
+                .build()
+                .also {
+                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                        Log.d(TAG, "Average luminosity: $luma")
+                    })
+                }
+
         var cameraSelector: CameraSelector = CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build()
 
         try {
             cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, imageCapture)
+            cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer)
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
         }
@@ -141,8 +148,7 @@ class ScanFragment : Fragment() {
 
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
+        /** Set up image capture listener, which is triggered after photo has been taken */
         imageCapture.takePicture(
                 outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
             override fun onError(exc: ImageCaptureException) {
@@ -169,6 +175,26 @@ class ScanFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+    }
+
+    private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
+        private fun ByteBuffer.toByteArray(): ByteArray {
+            rewind()    // Rewind the buffer to zero
+            val data = ByteArray(remaining())
+            get(data)   // Copy the buffer into a byte array
+            return data // Return the byte array
+        }
+
+        override fun analyze(image: ImageProxy) {
+            val buffer = image.planes[0].buffer
+            val data = buffer.toByteArray()
+            val pixels = data.map { it.toInt() and 0xFF }
+            val luma = pixels.average()
+
+            listener(luma)
+
+            image.close()
+        }
     }
 
     companion object {
