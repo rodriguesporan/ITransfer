@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.ocapi.databinding.FragmentScanBinding
+import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -31,7 +32,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /** Helper type alias used for analysis use case callbacks */
-typealias LumaListener = (luma: Double) -> Unit
+typealias BarcodeListener = (result: Task<MutableList<Barcode>>) -> Unit
 
 class ScanFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
@@ -121,7 +122,16 @@ class ScanFragment : Fragment() {
         val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer())
+                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { result ->
+                        result.addOnSuccessListener { list: MutableList<Barcode>? ->
+                            if (list != null && list.size > 0) {
+                                TONE.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
+                                for (code in list) {
+                                    Toast.makeText(requireContext(), "RawValue: ${code.rawValue}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    })
                 }
 
         var cameraSelector: CameraSelector = CameraSelector.Builder()
@@ -180,30 +190,20 @@ class ScanFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
-    private class LuminosityAnalyzer(): ImageAnalysis.Analyzer {
+    private class BarcodeAnalyzer(private val listener: BarcodeListener) : ImageAnalysis.Analyzer {
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun analyze(image: ImageProxy) {
             val inputImage = InputImage.fromMediaImage(image.image, image.imageInfo.rotationDegrees)
-            val options: BarcodeScannerOptions = BarcodeScannerOptions.Builder()
-                    .setBarcodeFormats(
-                            Barcode.FORMAT_QR_CODE,
-                            Barcode.FORMAT_CODE_39
-                    ).build()
+            val options = BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
             val scanner = BarcodeScanning.getClient(options)
-            val result = scanner.process(inputImage)
-            result
-                    .addOnSuccessListener {
-                        list: MutableList<Barcode>? ->
-                        if (list != null && list.size > 0) {
-                            TONE.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
-                            Log.d(TAG, "It size: ${list?.size}")
-                        }
-                    }
+            val result: Task<MutableList<Barcode>> = scanner.process(inputImage)
                     .addOnFailureListener { e -> Log.e(TAG, e.toString()) }
                     .addOnCompleteListener {
                         image.close()
                         image.image?.close()
                     }
+
+            listener(result)
         }
     }
 
