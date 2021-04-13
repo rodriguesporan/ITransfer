@@ -1,7 +1,10 @@
 package com.example.ocapi
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -17,8 +20,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.ocapi.databinding.FragmentScanBinding
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 import java.io.File
-import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -112,13 +118,10 @@ class ScanFragment : Fragment() {
                 }
 
         imageCapture = ImageCapture.Builder().build()
-
         val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        Log.d(TAG, "Average luminosity: $luma")
-                    })
+                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer())
                 }
 
         var cameraSelector: CameraSelector = CameraSelector.Builder()
@@ -177,23 +180,30 @@ class ScanFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
-    private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
-        private fun ByteBuffer.toByteArray(): ByteArray {
-            rewind()    // Rewind the buffer to zero
-            val data = ByteArray(remaining())
-            get(data)   // Copy the buffer into a byte array
-            return data // Return the byte array
-        }
-
+    private class LuminosityAnalyzer(): ImageAnalysis.Analyzer {
+        @SuppressLint("UnsafeExperimentalUsageError")
         override fun analyze(image: ImageProxy) {
-            val buffer = image.planes[0].buffer
-            val data = buffer.toByteArray()
-            val pixels = data.map { it.toInt() and 0xFF }
-            val luma = pixels.average()
-
-            listener(luma)
-
-            image.close()
+            val inputImage = InputImage.fromMediaImage(image.image, image.imageInfo.rotationDegrees)
+            val options: BarcodeScannerOptions = BarcodeScannerOptions.Builder()
+                    .setBarcodeFormats(
+                            Barcode.FORMAT_QR_CODE,
+                            Barcode.FORMAT_CODE_39
+                    ).build()
+            val scanner = BarcodeScanning.getClient(options)
+            val result = scanner.process(inputImage)
+            result
+                    .addOnSuccessListener {
+                        list: MutableList<Barcode>? ->
+                        if (list != null && list.size > 0) {
+                            TONE.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 100)
+                            Log.d(TAG, "It size: ${list?.size}")
+                        }
+                    }
+                    .addOnFailureListener { e -> Log.e(TAG, e.toString()) }
+                    .addOnCompleteListener {
+                        image.close()
+                        image.image?.close()
+                    }
         }
     }
 
@@ -202,5 +212,6 @@ class ScanFragment : Fragment() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+        private val TONE = ToneGenerator(AudioManager.STREAM_ALARM, 100)
     }
 }
