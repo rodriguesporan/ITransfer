@@ -13,7 +13,7 @@ import com.example.ocapi.dummy.DummyContent
 /**
  * A fragment representing a list of Items.
  */
-class ItemFragment : Fragment() {
+class StatementFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -27,7 +27,7 @@ class ItemFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_statement, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -50,7 +50,7 @@ class ItemFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-                ItemFragment().apply {
+                StatementFragment().apply {
                     arguments = Bundle().apply {
                         putInt(ARG_COLUMN_COUNT, columnCount)
                     }

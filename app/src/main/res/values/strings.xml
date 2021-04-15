@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">Ocapi</string>
+    <string name="app_name">ITransfer</string>
     <string name="hello_world">Hello World</string>
-    <string name="bye_world">Bye World</string>
-    <string name="email_msg">Congratulations André, you have been hired!!</string>
-    <string name="email_subject">You have been hired</string>
-    <string name="hello_second_fragment">Hello second fragment</string>
     <string name="home">Home</string>
-    <string name="list">List</string>
+    <string name="statement">Statement</string>
+    <string name="profile">Profile</string>
+    <string name="transfer_receive">Transfer or receive</string>
+    <string name="your_assets_today">Your assets today</string>
+    <string name="updated_at">Updated at: ?</string>
     <string name="scanner">Scanner</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

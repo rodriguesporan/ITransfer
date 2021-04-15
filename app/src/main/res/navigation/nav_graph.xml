@@ -3,30 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/firstFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.example.ocapi.FirstFragment"
-        android:label="Home Fragment"
-        tools:layout="@layout/fragment_first" >
-        <action
-            android:id="@+id/action_firstFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
-    </fragment>
+        android:id="@+id/homeFragment"
+        android:name="com.example.ocapi.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.example.ocapi.SecondFragment"
-        android:label="Next Fragment"
-        tools:layout="@layout/fragment_second" />
-    <fragment
-        android:id="@+id/itemFragment"
-        android:name="com.example.ocapi.ItemFragment"
-        android:label="List Fragment"
-        tools:layout="@layout/fragment_item_list" />
+        android:id="@+id/statementFragment"
+        android:name="com.example.ocapi.StatementFragment"
+        android:label="@string/statement"
+        tools:layout="@layout/fragment_statement" />
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.ocapi.ScanFragment"
-        android:label="Scan Fragment"
+        android:label="@string/scanner"
         tools:layout="@layout/fragment_scan" />
 </navigation>
