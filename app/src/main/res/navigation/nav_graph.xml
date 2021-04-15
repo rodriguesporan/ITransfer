@@ -16,6 +16,11 @@
         android:label="@string/statement"
         tools:layout="@layout/fragment_statement" />
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.ocapi.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.ocapi.ScanFragment"
         android:label="@string/scanner"
