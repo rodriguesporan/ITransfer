@@ -20,9 +20,4 @@
         android:name="com.example.ocapi.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/scanFragment"
-        android:name="com.example.ocapi.ScanFragment"
-        android:label="@string/scanner"
-        tools:layout="@layout/fragment_scan" />
 </navigation>

@@ -21,12 +21,9 @@ class HomeFragment : Fragment() {
             homeFragment = this@HomeFragment
             appViewModel = viewModel
         }
-        binding.appViewModel?.setContent(getString(R.string.hello_world))
 
         return binding.root
     }
 
-    fun goToScanner() {
-        startActivity(Intent(requireContext(), ScanActivity::class.java))
-    }
+    fun goToScanner() = startActivity(Intent(requireContext(), ScanActivity::class.java))
 }
