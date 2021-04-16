@@ -7,7 +7,7 @@
     <data>
         <variable
             name="scanActivity"
-            type="com.example.itransfer.ScanActivity" />
+            type="com.rodriguesporan.itransfer.ScanActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

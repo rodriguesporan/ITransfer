@@ -1,4 +1,4 @@
-package com.example.itransfer
+package com.rodriguesporan.itransfer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.itransfer.dummy.DummyContent
+import com.rodriguesporan.itransfer.dummy.DummyContent
 
 /**
  * A fragment representing a list of Items.

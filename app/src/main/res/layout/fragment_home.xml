@@ -8,11 +8,11 @@
 
         <variable
             name="appViewModel"
-            type="com.example.itransfer.model.AppViewModel" />
+            type="com.rodriguesporan.itransfer.model.AppViewModel" />
 
         <variable
             name="homeFragment"
-            type="com.example.itransfer.HomeFragment" />
+            type="com.rodriguesporan.itransfer.HomeFragment" />
     </data>
 
     <FrameLayout

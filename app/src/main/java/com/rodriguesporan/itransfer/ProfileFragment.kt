@@ -1,4 +1,4 @@
-package com.example.itransfer
+package com.rodriguesporan.itransfer
 
 import android.os.Bundle
 import android.view.LayoutInflater

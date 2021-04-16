@@ -1,4 +1,4 @@
-package com.example.itransfer
+package com.rodriguesporan.itransfer
 
 import android.content.Intent
 import android.os.Bundle

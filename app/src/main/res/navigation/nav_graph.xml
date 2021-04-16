@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.itransfer.HomeFragment"
+        android:name="com.rodriguesporan.itransfer.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/statementFragment"
-        android:name="com.example.itransfer.StatementFragment"
+        android:name="com.rodriguesporan.itransfer.StatementFragment"
         android:label="@string/statement"
         tools:layout="@layout/fragment_statement" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.itransfer.ProfileFragment"
+        android:name="com.rodriguesporan.itransfer.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

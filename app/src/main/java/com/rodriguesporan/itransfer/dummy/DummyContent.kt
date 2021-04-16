@@ -1,4 +1,4 @@
-package com.example.itransfer.dummy
+package com.rodriguesporan.itransfer.dummy
 
 import java.util.ArrayList
 import java.util.HashMap

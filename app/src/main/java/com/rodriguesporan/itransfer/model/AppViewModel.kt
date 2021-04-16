@@ -1,4 +1,4 @@
-package com.example.itransfer.model
+package com.rodriguesporan.itransfer.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
