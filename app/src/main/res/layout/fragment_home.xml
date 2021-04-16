@@ -8,11 +8,11 @@
 
         <variable
             name="appViewModel"
-            type="com.example.ocapi.model.AppViewModel" />
+            type="com.example.itransfer.model.AppViewModel" />
 
         <variable
             name="homeFragment"
-            type="com.example.ocapi.HomeFragment" />
+            type="com.example.itransfer.HomeFragment" />
     </data>
 
     <FrameLayout

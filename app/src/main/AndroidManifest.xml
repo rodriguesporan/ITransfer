@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ocapi">
+    package="com.example.itransfer">
 
     <uses-feature android:name="android.hardware.camera.any" />
 
@@ -27,7 +27,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ocapi.MainActivity" />
+                android:value="com.example.itransfer.MainActivity" />
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

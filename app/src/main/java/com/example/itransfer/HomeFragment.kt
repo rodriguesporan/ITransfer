@@ -1,4 +1,4 @@
-package com.example.ocapi
+package com.example.itransfer
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.ocapi.databinding.FragmentHomeBinding
-import com.example.ocapi.model.AppViewModel
+import com.example.itransfer.databinding.FragmentHomeBinding
+import com.example.itransfer.model.AppViewModel
 
 class HomeFragment : Fragment() {
     private val viewModel: AppViewModel by activityViewModels()

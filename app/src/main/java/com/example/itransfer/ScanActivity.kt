@@ -1,4 +1,4 @@
-package com.example.ocapi
+package com.example.itransfer
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import com.example.ocapi.databinding.ActivityScanBinding
+import com.example.itransfer.databinding.ActivityScanBinding
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.barcode.Barcode

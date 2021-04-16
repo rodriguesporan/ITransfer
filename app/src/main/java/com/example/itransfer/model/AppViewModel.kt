@@ -1,4 +1,4 @@
-package com.example.ocapi.model
+package com.example.itransfer.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
