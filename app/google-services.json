@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "398378216159",
+    "project_id": "itransfer-3ff86",
+    "storage_bucket": "itransfer-3ff86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398378216159:android:ceba36dc0ad5fe9aee576a",
+        "android_client_info": {
+          "package_name": "com.rodriguesporan.itransfer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398378216159-b6d7oe5cithmq21q8d8fu01iaubo256m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgRMTIlpbegywigXsPDF-vnOR0auLiI4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398378216159-b6d7oe5cithmq21q8d8fu01iaubo256m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
