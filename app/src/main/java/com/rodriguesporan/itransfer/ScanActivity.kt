@@ -17,10 +17,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.rodriguesporan.itransfer.databinding.ActivityScanBinding
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.rodriguesporan.itransfer.model.Transaction
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -34,6 +38,7 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var binding: ActivityScanBinding
+    private lateinit var reference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +49,7 @@ class ScanActivity : AppCompatActivity() {
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        reference = Firebase.database.reference
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -52,6 +58,7 @@ class ScanActivity : AppCompatActivity() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+        writeNewTransaction("userIdOne", "transactionIdOne", 100.0)
     }
 
     override fun onRequestPermissionsResult(
@@ -71,6 +78,17 @@ class ScanActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
+    }
+
+    private fun writeNewTransaction(userId: String, transactionId: String, amount: Double) {
+        val transaction = Transaction(amount)
+        reference.child("transactions").child(userId).child(transactionId).setValue(transaction)
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -125,11 +143,6 @@ class ScanActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        cameraExecutor.shutdown()
     }
 
     private class BarcodeAnalyzer(private val listener: BarcodeListener) : ImageAnalysis.Analyzer {
