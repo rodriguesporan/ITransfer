@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class AppViewModel: ViewModel() {
-    private val _content = MutableLiveData<String>("")
-    val content: LiveData<String> get() = _content
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> get() = _user
 
-    private val _secondGreeting = MutableLiveData<String>("Bye World")
-    val secondGreeting: LiveData<String> get() = _secondGreeting
+    private val _transactions = MutableLiveData<List<Transaction>>()
+    val transactions: LiveData<List<Transaction>> get() = _transactions
 
-    fun setContent(newValue: String) {
-        _content.value = newValue
+    fun setUser(user: User) {
+        _user.value = user
     }
 
-    fun setSecondGreeting(newValue: String) {
-        _secondGreeting.value = newValue
+    fun setTransactions(transactions: List<Transaction>) {
+        _transactions.value = transactions
     }
 }

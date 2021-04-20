@@ -163,7 +163,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "CameraXBasic"
+        private const val TAG = "ITransfer"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
         private val TONE = ToneGenerator(AudioManager.STREAM_ALARM, 100)

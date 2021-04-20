@@ -8,5 +8,5 @@ data class Transaction(
         var amount: Double? = null,
         var senderId: String? = null,
         var receiverId: String? = null,
-        var timestamp: Timestamp? = null
+        var timestamp: Long? = null
 )

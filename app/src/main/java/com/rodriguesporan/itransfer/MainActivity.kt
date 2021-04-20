@@ -2,6 +2,7 @@ package com.rodriguesporan.itransfer
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -11,12 +12,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.rodriguesporan.itransfer.model.AppViewModel
 import com.rodriguesporan.itransfer.model.User
+import java.sql.Timestamp
 
 class MainActivity : AppCompatActivity() {
 
+//    private val viewModel: AppViewModel by viewModels()
+
     private lateinit var navController: NavController
-    private lateinit var reference: DatabaseReference
+//    private lateinit var reference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,24 +35,28 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController)
 
-        // Write a message to the database
-        reference = Firebase.database.reference
-        writeNewUser("userIdOne", "+5511953158695")
+        /*reference = Firebase.database.reference
+        reference.child("users").child("userIdOne").get().addOnSuccessListener {
+            val user = it.getValue(User::class.java)
+            if (user != null) {
+                viewModel.setUser(user)
+                Log.i(TAG, "Got value ${viewModel.user.value?.firstName}")
+            }
+        }*/
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun writeNewUser(userId: String, phone: String) {
-        val newUser = User(phone)
+    /*private fun writeNewUser(userId: String, phone: String) {
+        val newUser = User(phone
+        , assets = 1500.0, timestamp = Timestamp(System.currentTimeMillis()).time, firstName = "André", lastName = "Rodrigues", QRToken = "QRToken"
+        )
         reference.child("users").child(userId).setValue(newUser)
-                .addOnSuccessListener { Log.i(TAG, "Got user ${it.toString()}") }
-                .addOnFailureListener { Log.e(TAG, "Something got wrong: ${it.toString()}") }
-
-    }
+    }*/
 
     companion object {
-        private const val TAG = "CameraXBasic"
+        private const val TAG = "ITransfer"
     }
 }
