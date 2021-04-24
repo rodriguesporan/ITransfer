@@ -14,8 +14,8 @@ class AppViewModel: ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    private val _transactions = MutableLiveData<List<Transaction>>()
-    val transactions: LiveData<List<Transaction>> get() = _transactions
+    private val _transactions = MutableLiveData<MutableList<Transaction>>()
+    val transactions: LiveData<MutableList<Transaction>> get() = _transactions
 
     init {
         getTransactions()
@@ -25,14 +25,19 @@ class AppViewModel: ViewModel() {
         _user.value = user
     }
 
-    fun setTransactions(transactions: List<Transaction>) {
-        _transactions.value = transactions
+    fun addTransaction(transaction: Transaction) {
+        _transactions.value?.add(transaction)
+    }
+
+    fun addTransactions(transactions: MutableList<Transaction>) {
+        _transactions.value?.addAll(transactions)
     }
 
     private fun getTransactions() {
+        _transactions.value = mutableListOf()
 //        _transactions.value = transactionDatabaseService.readTransactions("")
-        viewModelScope.launch {
-            _transactions.value = listOf(Transaction("-MYl1arFQIbtdrrolCO1", 349.99, "-MYl-NTXttZTSkYnB8c3"))
-        }
+//        viewModelScope.launch {
+//            _transactions.value = mutableListOf(Transaction("-MYl1arFQIbtdrrolCO1", 349.99, "-MYl-NTXttZTSkYnB8c3"))
+//        }
     }
 }

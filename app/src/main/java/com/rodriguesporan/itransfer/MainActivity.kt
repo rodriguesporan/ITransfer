@@ -9,7 +9,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -61,17 +64,51 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-        Firebase.database.reference
+        /*Firebase.database.reference
                 .child("transactions")
                 .child("-MYl1arFQIbtdrrolCO1")
                 .get()
                 .addOnSuccessListener {
                     val transaction = it.getValue(Transaction::class.java)
                     if (transaction != null) {
-                        Log.d(TAG, transaction.amount.toString())
-                        viewModel.setTransactions(mutableListOf(transaction))
+                        Log.d(TAG, transaction.toString())
+                        viewModel.addTransaction(transaction)
                     }
-                }
+                }*/
+
+        /*Firebase.database.reference
+                .child("transactions")
+                .orderByChild("timestamp")
+                .addValueEventListener(object: ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (transactionSnapshot in dataSnapshot.children) {
+                            val transaction = transactionSnapshot.getValue(Transaction::class.java)
+                            if (transaction != null) {
+                                viewModel.addTransaction(transaction)
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(e: DatabaseError) {
+                        Log.w(TAG, "loadTransaction:onCancelled", e.toException())
+                    }
+                })*/
+
+        Firebase.database.reference
+                .child("transactions")
+                .orderByChild("timestamp")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            val transactions = dataSnapshot.children.mapNotNull { it.getValue(Transaction::class.java) }.toMutableList()
+                            viewModel.addTransactions(transactions)
+                        }
+                    }
+
+                    override fun onCancelled(e: DatabaseError) {
+                        Log.w(TAG, "loadTransaction:onCancelled", e.toException())
+                    }
+                })
     }
 
     override fun onSupportNavigateUp(): Boolean {
