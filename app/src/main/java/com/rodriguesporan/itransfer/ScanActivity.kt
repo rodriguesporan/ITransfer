@@ -25,6 +25,10 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.rodriguesporan.itransfer.model.Transaction
+import com.rodriguesporan.itransfer.model.User
+import com.rodriguesporan.itransfer.network.TransactionDatabaseService
+import com.rodriguesporan.itransfer.network.UserDatabaseService
+import java.sql.Timestamp
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -38,7 +42,7 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var binding: ActivityScanBinding
-    private lateinit var reference: DatabaseReference
+    private val transactionDatabaseService = TransactionDatabaseService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +53,7 @@ class ScanActivity : AppCompatActivity() {
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        reference = Firebase.database.reference
+//        transactionDatabaseService.writeNewTransaction(amount = 100.0, senderId = "-MYl-NTXttZTSkYnB8c3", timestamp = Timestamp(System.currentTimeMillis()).time)
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -58,7 +62,6 @@ class ScanActivity : AppCompatActivity() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-        writeNewTransaction("userIdOne", "transactionIdOne", 100.0)
     }
 
     override fun onRequestPermissionsResult(
@@ -83,12 +86,6 @@ class ScanActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-    }
-
-    private fun writeNewTransaction(userId: String, transactionId: String, amount: Double) {
-        val transaction = Transaction(amount)
-        reference.child("transactions").child(userId).child(transactionId).setValue(transaction)
-
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rodriguesporan.itransfer.databinding.FragmentItemBinding
-import com.rodriguesporan.itransfer.model.AppViewModel
 import com.rodriguesporan.itransfer.model.Transaction
 
-class MyItemRecyclerViewAdapter(): ListAdapter<Transaction, MyItemRecyclerViewAdapter.ViewHolder>(DiffCallback) {
+class ItemAdapter(): ListAdapter<Transaction, ItemAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private val binding: FragmentItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {

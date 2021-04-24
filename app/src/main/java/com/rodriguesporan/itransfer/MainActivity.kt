@@ -11,17 +11,19 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.model.AppViewModel
+import com.rodriguesporan.itransfer.model.Transaction
 import com.rodriguesporan.itransfer.model.User
+import com.rodriguesporan.itransfer.network.UserDatabaseService
 import java.sql.Timestamp
 
 class MainActivity : AppCompatActivity() {
 
-//    private val viewModel: AppViewModel by viewModels()
-
+    private val viewModel: AppViewModel by viewModels()
     private lateinit var navController: NavController
-//    private lateinit var reference: DatabaseReference
+//    private val userDatabaseService = UserDatabaseService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,26 +37,46 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController)
 
-        /*reference = Firebase.database.reference
-        reference.child("users").child("userIdOne").get().addOnSuccessListener {
-            val user = it.getValue(User::class.java)
-            if (user != null) {
-                viewModel.setUser(user)
-                Log.i(TAG, "Got value ${viewModel.user.value?.firstName}")
-            }
+        /*userDatabaseService.writeNewUser(
+                "+5511953158695",
+                assets = 1500.0,
+                timestamp = Timestamp(System.currentTimeMillis()).time,
+                firstName = "André",
+                lastName = "Rodrigues",
+                QRToken = "QRToken"
+        )
+        userDatabaseService.readUser("-MYl-NTXttZTSkYnB8c3")?.let {
+            Log.d(TAG, it.phone.toString() )
+            viewModel.setUser(it)
         }*/
+        Firebase.database.reference
+                .child("users")
+                .child("-MYl-NTXttZTSkYnB8c3")
+                .get()
+                .addOnSuccessListener {
+                    val user = it.getValue(User::class.java)
+                    if (user != null) {
+                        Log.d(TAG, user.firstName.toString())
+                        viewModel.setUser(user)
+                    }
+                }
+
+        Firebase.database.reference
+                .child("transactions")
+                .child("-MYl1arFQIbtdrrolCO1")
+                .get()
+                .addOnSuccessListener {
+                    val transaction = it.getValue(Transaction::class.java)
+                    if (transaction != null) {
+                        Log.d(TAG, transaction.amount.toString())
+                        viewModel.setTransactions(mutableListOf(transaction))
+                    }
+                }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    /*private fun writeNewUser(userId: String, phone: String) {
-        val newUser = User(phone
-        , assets = 1500.0, timestamp = Timestamp(System.currentTimeMillis()).time, firstName = "André", lastName = "Rodrigues", QRToken = "QRToken"
-        )
-        reference.child("users").child(userId).setValue(newUser)
-    }*/
 
     companion object {
         private const val TAG = "ITransfer"
