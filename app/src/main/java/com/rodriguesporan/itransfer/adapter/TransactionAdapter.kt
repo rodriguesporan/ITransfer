@@ -1,19 +1,18 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rodriguesporan.itransfer.databinding.FragmentItemBinding
+import com.rodriguesporan.itransfer.databinding.FragmentStatementItemBinding
 import com.rodriguesporan.itransfer.model.Transaction
 
-class ItemAdapter(): ListAdapter<Transaction, ItemAdapter.ViewHolder>(DiffCallback) {
+class TransactionAdapter(): ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(DiffCallback) {
 
-    class ViewHolder(private val binding: FragmentItemBinding): RecyclerView.ViewHolder(binding.root) {
+    class TransactionViewHolder(private val binding: FragmentStatementItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
             binding.transaction = transaction
-
             binding.executePendingBindings()
         }
     }
@@ -23,12 +22,9 @@ class ItemAdapter(): ListAdapter<Transaction, ItemAdapter.ViewHolder>(DiffCallba
         override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean = oldItem.amount == newItem.amount
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(FragmentItemBinding.inflate(LayoutInflater.from(parent.context)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
+        return TransactionViewHolder(FragmentStatementItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val transaction = getItem(position)
-        holder.bind(transaction)
-    }
+    override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) = holder.bind(getItem(position))
 }
