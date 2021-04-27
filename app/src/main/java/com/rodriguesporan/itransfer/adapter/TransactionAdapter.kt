@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rodriguesporan.itransfer.databinding.FragmentStatementItemBinding
-import com.rodriguesporan.itransfer.model.Transaction
+import com.rodriguesporan.itransfer.data.Transaction
 
 class TransactionAdapter(): ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(DiffCallback) {
 

@@ -1,4 +1,4 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rodriguesporan.itransfer.adapter.TransactionAdapter
 import com.rodriguesporan.itransfer.databinding.FragmentStatementBinding
-import com.rodriguesporan.itransfer.model.AppViewModel
+import com.rodriguesporan.itransfer.data.AppViewModel
 
 class StatementFragment : Fragment() {
 

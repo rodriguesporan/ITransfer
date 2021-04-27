@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".StatementFragment">
+    tools:context=".ui.StatementFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.rodriguesporan.itransfer.model.AppViewModel" />
+            type="com.rodriguesporan.itransfer.data.AppViewModel" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -4,7 +4,7 @@
     <string name="statement">Statement</string>
     <string name="profile">Profile</string>
     <string name="scanner">Scanner</string>
-    <string name="transfer_receive">Transfer or receive</string>
+    <string name="transfer_receive">Transfer or receive ></string>
     <string name="your_assets_today">Your assets today:</string>
     <string name="assets">R$ %1$s</string>
     <string name="updated_at">Updated at: %1$s</string>

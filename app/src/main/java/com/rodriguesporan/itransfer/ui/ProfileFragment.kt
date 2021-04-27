@@ -1,10 +1,11 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.rodriguesporan.itransfer.R
 
 class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

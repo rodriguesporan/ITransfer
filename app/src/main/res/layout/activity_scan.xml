@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ScanActivity">
+    tools:context=".ui.ScanActivity">
 
     <data>
         <variable
             name="scanActivity"
-            type="com.rodriguesporan.itransfer.ScanActivity" />
+            type="com.rodriguesporan.itransfer.ui.ScanActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

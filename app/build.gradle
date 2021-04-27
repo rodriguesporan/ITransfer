@@ -75,11 +75,11 @@ dependencies {
     // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:1.0.0-alpha23"
 
-    // Use this dependency to bundle the model with your app
+    // Use this dependency to bundle the data with your app
     implementation 'com.google.mlkit:barcode-scanning:16.1.1'
-    // Object feature and model
+    // Object feature and data
     implementation 'com.google.mlkit:object-detection:16.2.3'
-    // Custom model
+    // Custom data
     implementation 'com.google.mlkit:object-detection-custom:16.3.1'
 
     // Import the Firebase BoM

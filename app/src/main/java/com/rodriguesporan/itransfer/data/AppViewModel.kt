@@ -1,11 +1,9 @@
-package com.rodriguesporan.itransfer.model
+package com.rodriguesporan.itransfer.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.rodriguesporan.itransfer.network.TransactionDatabaseService
-import kotlinx.coroutines.launch
 
 class AppViewModel: ViewModel() {
 
@@ -35,9 +33,5 @@ class AppViewModel: ViewModel() {
 
     private fun getTransactions() {
         _transactions.value = mutableListOf()
-//        _transactions.value = transactionDatabaseService.readTransactions("")
-//        viewModelScope.launch {
-//            _transactions.value = mutableListOf(Transaction("-MYl1arFQIbtdrrolCO1", 349.99, "-MYl-NTXttZTSkYnB8c3"))
-//        }
     }
 }

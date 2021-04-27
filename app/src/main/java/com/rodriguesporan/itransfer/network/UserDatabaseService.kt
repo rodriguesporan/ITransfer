@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.rodriguesporan.itransfer.model.User
+import com.rodriguesporan.itransfer.data.User
 
 class UserDatabaseService(
         private val userRef: DatabaseReference = Firebase.database.reference.child("users")

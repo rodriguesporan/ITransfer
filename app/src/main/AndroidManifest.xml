@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ocapi">
-        <activity android:name=".SplashScreenActivity" android:noHistory="true" android:theme="@style/Theme.Ocapi.SplashScreen">
+        <activity android:name=".ui.SplashScreenActivity" android:noHistory="true" android:theme="@style/Theme.Ocapi.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ScanActivity"
+            android:name=".ui.ScanActivity"
             android:label=""
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.rodriguesporan.itransfer.MainActivity" />
+                android:value="com.rodriguesporan.itransfer.ui.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

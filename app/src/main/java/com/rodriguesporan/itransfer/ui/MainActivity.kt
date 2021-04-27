@@ -1,4 +1,4 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -11,16 +11,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.rodriguesporan.itransfer.model.AppViewModel
-import com.rodriguesporan.itransfer.model.Transaction
-import com.rodriguesporan.itransfer.model.User
-import com.rodriguesporan.itransfer.network.UserDatabaseService
-import java.sql.Timestamp
+import com.rodriguesporan.itransfer.R
+import com.rodriguesporan.itransfer.data.AppViewModel
+import com.rodriguesporan.itransfer.data.Transaction
+import com.rodriguesporan.itransfer.data.User
 
 class MainActivity : AppCompatActivity() {
 

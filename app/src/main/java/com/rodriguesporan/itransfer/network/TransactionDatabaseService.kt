@@ -5,9 +5,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.rodriguesporan.itransfer.model.Transaction
-import com.rodriguesporan.itransfer.model.User
-import java.sql.Timestamp
+import com.rodriguesporan.itransfer.data.Transaction
 
 class TransactionDatabaseService(
         private val transactionRef: DatabaseReference = Firebase.database.reference.child("transactions")

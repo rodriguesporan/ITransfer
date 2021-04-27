@@ -1,4 +1,4 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.rodriguesporan.itransfer.databinding.FragmentHomeBinding
-import com.rodriguesporan.itransfer.model.AppViewModel
+import com.rodriguesporan.itransfer.data.AppViewModel
 
 class HomeFragment : Fragment() {
 

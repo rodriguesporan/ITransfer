@@ -1,4 +1,4 @@
-package com.rodriguesporan.itransfer
+package com.rodriguesporan.itransfer.ui
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -17,18 +17,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.rodriguesporan.itransfer.databinding.ActivityScanBinding
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.rodriguesporan.itransfer.model.Transaction
-import com.rodriguesporan.itransfer.model.User
+import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.network.TransactionDatabaseService
-import com.rodriguesporan.itransfer.network.UserDatabaseService
-import java.sql.Timestamp
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
