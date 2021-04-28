@@ -7,7 +7,7 @@
     android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="112dp"
+    app:behavior_peekHeight="128dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <com.google.android.material.card.MaterialCardView

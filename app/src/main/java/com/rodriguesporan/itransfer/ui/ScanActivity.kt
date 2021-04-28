@@ -1,6 +1,7 @@
 package com.rodriguesporan.itransfer.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.AudioManager
@@ -47,6 +48,8 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var binding: ActivityScanBinding
     private val transactionDatabaseService = TransactionDatabaseService()
+    private var currentWorkflowState: AppViewModel.WorkflowState =
+        AppViewModel.WorkflowState.NOT_STARTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,25 +62,25 @@ class ScanActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        transactionDatabaseService.writeNewTransaction(amount = 100.0, senderId = "-MYl-NTXttZTSkYnB8c3", timestamp = Timestamp(System.currentTimeMillis()).time)
         Firebase.database.reference
-                .child("users")
-                .child("-MYl-NTXttZTSkYnB8c3")
-                .get()
-                .addOnSuccessListener {
-                    val user = it.getValue(User::class.java)
-                    if (user != null) {
-                        Log.d(TAG, user.firstName.toString())
-                        viewModel.setUser(user)
-                        try {
-                            val bitmap: Bitmap = BarcodeEncoder()
-                                    .encodeBitmap(user.phone, BarcodeFormat.QR_CODE, 800, 800)
+            .child("users")
+            .child("-MYl-NTXttZTSkYnB8c3")
+            .get()
+            .addOnSuccessListener {
+                val user = it.getValue(User::class.java)
+                if (user != null) {
+                    Log.d(TAG, user.firstName.toString())
+                    viewModel.setUser(user)
+                    try {
+                        val bitmap: Bitmap = BarcodeEncoder()
+                            .encodeBitmap(user.phone, BarcodeFormat.QR_CODE, 800, 800)
 
-                            val imageView = findViewById<ImageView>(R.id.qr_code)
-                            imageView.setImageBitmap(bitmap)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "QR code generation failed", e)
-                        }
+                        val imageView = findViewById<ImageView>(R.id.qr_code)
+                        imageView.setImageBitmap(bitmap)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "QR code generation failed", e)
                     }
                 }
+            }
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -102,17 +105,28 @@ class ScanActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        startCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentWorkflowState = AppViewModel.WorkflowState.NOT_STARTED
+    }
+
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -134,59 +148,59 @@ class ScanActivity : AppCompatActivity() {
          * */
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener(
-                Runnable {
-                    val cameraProvider = cameraProviderFuture.get()
-                    bindPreview(cameraProvider)
-                },
-                ContextCompat.getMainExecutor(this)
+            Runnable {
+                val cameraProvider = cameraProviderFuture.get()
+                bindPreview(cameraProvider)
+            },
+            ContextCompat.getMainExecutor(this)
         ) // This returns an Executor that runs on the main thread
+        viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTING)
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
         var preview: Preview = Preview.Builder()
-                .build()
-                .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+            .build()
+            .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
 
         imageCapture = ImageCapture.Builder().build()
         val imageAnalyzer = ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { result ->
-                        result.addOnSuccessListener { list: MutableList<Barcode>? ->
-                            if (list != null && list.size > 0) {
-                                cameraExecutor.shutdownNow() // worked and the camera still alive
-                                Toast.makeText(
-                                        this,
-                                        "Barcodelist size: ${list.size}",
-                                        Toast.LENGTH_SHORT
-                                ).show()
-                                Log.d(TAG, "Barcodelist size: ${list.size}")
-//                                for (code in list) {
-//                                    Toast.makeText(
-//                                            this,
-//                                            "RawValue: ${code.rawValue}",
-//                                            Toast.LENGTH_SHORT
-//                                    ).show()
-//                                }
-                                TONE.startTone(ToneGenerator.TONE_PROP_BEEP2)
-                            }
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
+            .build()
+            .also {
+                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { result ->
+                    result.addOnSuccessListener { list: MutableList<Barcode> ->
+                        if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
+                            viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
+                            cameraProvider.unbindAll()
+                            Log.d(TAG, "Barcodelist size: ${list.size}")
+                            // TODO: when call firebase to check with the user exists put SEARCHING
+                            viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
+                            // TODO: after firebase search and confirmation that the user is not the logged in put CONFIRMED
+                            viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
+                            /**
+                             * TODO: open a new activity
+                             * create a list of status to identify the scanner workflow
+                             * when receive a valid codelist open a loaderComponentUI
+                             * after that open the new activity
+                             */
+                            startActivity(Intent(this, SendPaymentActivity::class.java))
                         }
-                    })
-                }
+                    }
+                })
+            }
 
         var cameraSelector: CameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build()
+            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .build()
 
         try {
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(
-                    this as LifecycleOwner,
-                    cameraSelector,
-                    preview,
-                    imageCapture,
-                    imageAnalyzer
+                this as LifecycleOwner,
+                cameraSelector,
+                preview,
+                imageCapture,
+                imageAnalyzer
             )
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
@@ -196,20 +210,17 @@ class ScanActivity : AppCompatActivity() {
     private class BarcodeAnalyzer(private val listener: BarcodeListener) : ImageAnalysis.Analyzer {
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun analyze(imageProxy: ImageProxy) {
-            val inputImage = InputImage.fromMediaImage(imageProxy.image, imageProxy.imageInfo.rotationDegrees)
+            val inputImage =
+                InputImage.fromMediaImage(imageProxy.image, imageProxy.imageInfo.rotationDegrees)
             val options =
-                    BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
+                BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
             val scanner = BarcodeScanning.getClient(options)
             val result: Task<MutableList<Barcode>> = scanner.process(inputImage)
-                    .addOnFailureListener { e -> Log.e(TAG, e.toString()) }
-                    .addOnSuccessListener {
-                        imageProxy.image?.close()
-                        imageProxy.close()
-                    }
-                    .addOnCompleteListener {
-                        imageProxy.image?.close()
-                        imageProxy.close()
-                    }
+                .addOnFailureListener { e -> Log.e(TAG, e.toString()) }
+                .addOnCompleteListener {
+                    imageProxy.image?.close()
+                    imageProxy.close()
+                }
 
             listener(result)
         }

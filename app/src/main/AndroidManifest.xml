@@ -3,20 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rodriguesporan.itransfer">
 
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
         android:theme="@style/Theme.ITransfer">
-        <activity android:name=".ui.SplashScreenActivity" android:noHistory="true" android:theme="@style/Theme.ITransfer.SplashScreen">
+        <activity android:name=".ui.SendPaymentActivity" android:label="@string/send_payment"></activity>
+        <activity
+            android:name=".ui.SplashScreenActivity"
+            android:noHistory="true"
+            android:theme="@style/Theme.ITransfer.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

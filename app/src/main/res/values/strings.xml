@@ -10,4 +10,8 @@
     <string name="updated_at">Updated at: %1$s</string>
     <string name="your_qr_code">This is your QR code</string>
     <string name="show_qr_code">Show it to receive payments</string>
+    <string name="send_payment">Send payment</string>
+    <string name="btn_pay">Pay</string>
+    <string name="_0_00">0.00</string>
+    <string name="amount">amount</string>
 </resources>
