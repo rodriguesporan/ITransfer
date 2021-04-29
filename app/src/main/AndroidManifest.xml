@@ -18,9 +18,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ITransfer">
-        <activity android:name=".ui.SendPaymentActivity" android:label="@string/send_payment"></activity>
         <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name=".ui.PaymentReceiptActivity"
+            android:label="@string/payment_receipt"
+            android:parentActivityName=".ui.SendPaymentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rodriguesporan.itransfer.ui.SendPaymentActivity" />
+        </activity>
+        <activity
+            android:name=".ui.SendPaymentActivity"
+            android:label="@string/send_payment"
+            android:parentActivityName=".ui.ScanActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rodriguesporan.itransfer.ui.ScanActivity" />
+        </activity>
+        <activity
+            android:name=".ui.SplashActivity"
             android:noHistory="true"
             android:theme="@style/Theme.ITransfer.SplashScreen">
             <intent-filter>

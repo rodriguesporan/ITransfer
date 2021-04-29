@@ -7,10 +7,10 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.rodriguesporan.itransfer.R
 
-class SplashScreenActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        setContentView(R.layout.activity_splash)
 
         startMainActivity()
     }
