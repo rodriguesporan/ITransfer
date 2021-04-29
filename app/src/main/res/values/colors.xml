@@ -13,4 +13,12 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="grey_10">#e0e0e0</color>
+    <color name="blue_grey_200">#61616b</color>
+    <color name="blue_grey_500">#373740</color>
+    <color name="blue_grey_700">#11111a</color>
+    <color name="green_200">#62ecb0</color>
+    <color name="green_500">#1eb980</color>
+    <color name="green_700">#008853</color>
+    <color name="red_900">#B00020</color>
+    <color name="red_500">#CF6679</color>
 </resources>
