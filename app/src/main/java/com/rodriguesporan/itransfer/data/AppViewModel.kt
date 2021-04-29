@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.barcode.Barcode
-import com.rodriguesporan.itransfer.network.TransactionDatabaseService
 
 class AppViewModel: ViewModel() {
-
-    private val transactionDatabaseService = TransactionDatabaseService()
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user

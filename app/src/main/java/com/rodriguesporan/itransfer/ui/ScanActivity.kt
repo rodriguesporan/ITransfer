@@ -20,6 +20,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.mlkit.vision.barcode.Barcode
@@ -32,7 +36,6 @@ import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.data.AppViewModel
 import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityScanBinding
-import com.rodriguesporan.itransfer.network.TransactionDatabaseService
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -43,13 +46,13 @@ class ScanActivity : AppCompatActivity() {
 
     private var imageCapture: ImageCapture? = null
     private val viewModel: AppViewModel by viewModels()
+    private var currentWorkflowState: AppViewModel.WorkflowState =
+        AppViewModel.WorkflowState.NOT_STARTED
+    private val userReference: DatabaseReference = Firebase.database.reference.child("users")
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var binding: ActivityScanBinding
-    private val transactionDatabaseService = TransactionDatabaseService()
-    private var currentWorkflowState: AppViewModel.WorkflowState =
-        AppViewModel.WorkflowState.NOT_STARTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,18 +63,18 @@ class ScanActivity : AppCompatActivity() {
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        transactionDatabaseService.writeNewTransaction(amount = 100.0, senderId = "-MYl-NTXttZTSkYnB8c3", timestamp = Timestamp(System.currentTimeMillis()).time)
-        Firebase.database.reference
-            .child("users")
-            .child("-MYl-NTXttZTSkYnB8c3")
+
+        userReference.child("-MYl-NTXttZTSkYnB8c3")
+//            .addListenerForSingleValueEvent() from chache
+//            .addChildEventListener() to override list methods
+//            .addValueEventListener() to observe changes
             .get()
             .addOnSuccessListener {
                 val user = it.getValue(User::class.java)
                 if (user != null) {
-                    Log.d(TAG, user.firstName.toString())
                     viewModel.setUser(user)
                     try {
-                        val bitmap: Bitmap = BarcodeEncoder()
+                        val bitmap = BarcodeEncoder()
                             .encodeBitmap(user.phone, BarcodeFormat.QR_CODE, 800, 800)
 
                         val imageView = findViewById<ImageView>(R.id.qr_code)
@@ -89,20 +92,6 @@ class ScanActivity : AppCompatActivity() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-        /*val user = viewModel.user.value
-        if (user?.phone != null) {
-            try {
-                val bitmap: Bitmap = BarcodeEncoder()
-                    .encodeBitmap(user.phone, BarcodeFormat.QR_CODE, 600, 600)
-
-                val imageView = findViewById<ImageView>(R.id.qr_code)
-                imageView.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                Log.e(TAG, "QR code generation failed", e)
-            }
-        }*/
-
     }
 
     override fun onResume() {
@@ -230,6 +219,5 @@ class ScanActivity : AppCompatActivity() {
         private const val TAG = "ITransfer"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
-        private val TONE = ToneGenerator(AudioManager.STREAM_ALARM, 100)
     }
 }
