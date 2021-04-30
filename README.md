@@ -12,3 +12,5 @@
 * Machine Learning Kit
 * Vision APIs
 * Barcode scanning
+
+![Badge](./images/Screenshot_20210430-111946.png)
