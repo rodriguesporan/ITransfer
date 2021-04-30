@@ -15,7 +15,7 @@
 
 ---
 
-![Image1](./images/Screenshot_20210430-111946.png | width=100)
+![Image1](./images/Screenshot_20210430-111946.png){:height="50%" width="50%"}
 ![Image2](./images/Screenshot_20210430-111959.png | width=100)
 ![Image3](./images/Screenshot_20210430-112117.png | width=100)
 ![Image4](./images/Screenshot_20210430-112556.png | width=100)
