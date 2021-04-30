@@ -15,8 +15,8 @@
 
 ---
 
-![Image1](./images/Screenshot_20210430-111946.png){width="50%"}
-![Image2](./images/Screenshot_20210430-111959.png | width=100)
+<img src="https://raw.githubusercontent.com/rodriguesporan/ITransfer/main/images/Screenshot_20210430-111946.png" width="100">
+![Image2](./images/Screenshot_20210430-111959.png =100)
 ![Image3](./images/Screenshot_20210430-112117.png | width=100)
 ![Image4](./images/Screenshot_20210430-112556.png | width=100)
 ![Image5](./images/Screenshot_20210430-112647.png | width=100)
