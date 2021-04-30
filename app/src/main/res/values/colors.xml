@@ -8,6 +8,7 @@
     <color name="blue_grey_800">#373740</color>
     <color name="blue_grey_900">#17171F</color>
     <color name="blue_grey_dark">#11111A</color>
+    <color name="dark_mode_surface">#121212</color>
 
     <color name="green_100">#BAE6D1</color>
     <color name="green_light">#62ECB0</color>

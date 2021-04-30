@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setupWithNavController(navController)
 
+//        window.decorView.setBackgroundColor(android.R.color.transparent)
         setupActionBarWithNavController(navController)
 
         val userListener = object : ValueEventListener {

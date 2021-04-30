@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.ITransfer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/blue_grey_500</item>
+        <item name="colorPrimary">@color/green_dark</item>
         <item name="colorPrimaryVariant">@color/blue_grey_900</item>
         <item name="colorSecondary">@color/green_100</item>
-        <item name="colorSecondaryVariant">@color/green_600</item>
+        <item name="colorSecondaryVariant">@color/green_dark</item>
 
         <item name="background">@color/black</item>
-        <item name="colorSurface">@color/black</item>
-        <item name="colorError">@color/red_500</item>
+        <item name="colorSurface">@color/dark_mode_surface</item>
+        <item name="colorError">@color/red_900</item>
 
         <item name="colorOnPrimary">@color/black</item>
         <item name="colorOnSecondary">@color/black</item>
@@ -17,16 +17,18 @@
 
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="materialButtonStyle">@style/Widget.ITransfer.Button</item>
+        <item name="android:actionBarStyle">@style/Widget.ITransfer.ActionBar.Transparent</item>
     </style>
-    <style name="Theme.ITransfer.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.ITransfer.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
     <style name="Widget.ITransfer.Button" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?attr/colorSecondaryVariant</item>
         <item name="android:textColor">@color/white</item>
     </style>
-    <!--<style name="Theme.ITransfer.ScanScreen" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="android:elevation">0dp</item>
+    <style name="Widget.ITransfer.ActionBar.Transparent" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@android:color/transparent</item>
-    </style>-->
+        <!--For compatibility-->
+        <item name="background">@android:color/transparent</item>
+    </style>
 </resources>

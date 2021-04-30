@@ -37,7 +37,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:noHistory="true"
-            android:theme="@style/Theme.ITransfer.SplashScreen">
+            android:theme="@style/Theme.ITransfer.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +52,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rodriguesporan.itransfer.ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.MainActivity">
+        <activity
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
