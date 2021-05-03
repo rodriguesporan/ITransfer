@@ -1,15 +1,17 @@
 package com.rodriguesporan.itransfer.ui
 
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -17,17 +19,34 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.R
+import com.rodriguesporan.itransfer.databinding.ActivityLoginBinding
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         auth = Firebase.auth
+
+        binding.signInButton.setOnClickListener {
+            startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
+        }
     }
 
     override fun onStart() {
@@ -38,22 +57,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        if (user == null) {
-            // Configure Google Sign In
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(this, gso)
-//            val account = GoogleSignIn.getLastSignedInAccount(this)
-
-            val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
-            signInButton.setOnClickListener {
-                val signInIntent: Intent = googleSignInClient.getSignInIntent()
-                startActivityForResult(signInIntent, RC_SIGN_IN)
-            }
-        } else {
+        if (user != null) {
             startMainActivity()
         }
     }
@@ -99,8 +103,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-//        const val RESULT_OK = 1
-        const val RC_SIGN_IN = 1
         private const val TAG = "ITransfer"
+        private const val RC_SIGN_IN = 9001
     }
 }
