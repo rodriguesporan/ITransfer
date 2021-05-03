@@ -35,6 +35,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply { signOutButton.setOnClickListener { signOut() } }
+        binding.apply { disconnectButton.setOnClickListener { revokeAccess() } }
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -62,22 +63,33 @@ class ProfileFragment : Fragment() {
         // Google sign out
         googleSignInClient.signOut().addOnCompleteListener(requireActivity()) {
             updateUI(null)
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        }
+    }
+
+    private fun revokeAccess() {
+        // Firebase sign out
+        auth.signOut()
+
+        // Google revoke access
+        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) {
+            updateUI(null)
         }
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        if (user != null) {
-            binding.apply {
-                displayNameTextView.text = auth.currentUser.displayName
-                emailTextView.text = auth.currentUser.email
-                idTextView.text = auth.currentUser.uid
-            }
-        } else {
+        if (user == null) {
             binding.apply {
                 displayNameTextView.text = ""
                 emailTextView.text = ""
                 idTextView.text = ""
+            }
+
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        } else {
+            binding.apply {
+                displayNameTextView.text = auth.currentUser.displayName
+                emailTextView.text = auth.currentUser.email
+                idTextView.text = auth.currentUser.uid
             }
         }
     }
