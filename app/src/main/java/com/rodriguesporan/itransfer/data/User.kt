@@ -17,7 +17,8 @@ data class User(
     var phoneNumber: String? = null,
     var photoUrl: String? = null,
     var total: Double? = null,
-    var updatedAt: Date? = null
+    var updatedAt: Date? = null,
+    var lastWeekTransactionsUid: List<String> = listOf()
 ) {
     fun formatUpdatedAt(): String {
         return if (updatedAt == null) {

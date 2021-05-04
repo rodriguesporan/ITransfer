@@ -52,20 +52,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController)
 
         auth = Firebase.auth
-
-//        val transactionsListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    val transactions = dataSnapshot.children.mapNotNull { it.getValue(Transaction::class.java) }.toMutableList()
-//                    viewModel.addTransactions(transactions)
-//                }
-//            }
-//
-//            override fun onCancelled(e: DatabaseError) {
-//                Log.w(TAG, "loadTransaction:onCancelled", e.toException())
-//            }
-//        }
-//        transactionReference.orderByChild("timestamp").addValueEventListener(transactionsListener)
     }
 
 
@@ -89,6 +75,19 @@ class MainActivity : AppCompatActivity() {
                         val user: User = documents.elementAt(0).toObject(User::class.java)
                         Log.d(TAG, "User:${user.toString()}")
                         viewModel.setUser(user)
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting user: ", exception)
+                }
+
+            db.collection("transactions")
+                .whereEqualTo("senderId", currentUser.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        for (document in documents) {
+                            viewModel.addTransaction(document.toObject(Transaction::class.java))
+                        }
                     }
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting user: ", exception)
