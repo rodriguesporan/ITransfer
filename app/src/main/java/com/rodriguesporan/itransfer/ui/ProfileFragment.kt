@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -81,15 +83,18 @@ class ProfileFragment : Fragment() {
             binding.apply {
                 displayNameTextView.text = ""
                 emailTextView.text = ""
-                idTextView.text = ""
             }
 
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         } else {
             binding.apply {
+                photoImageView.load(auth.currentUser.photoUrl) {
+                    placeholder(R.drawable.ic_baseline_person_24)
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                }
                 displayNameTextView.text = auth.currentUser.displayName
                 emailTextView.text = auth.currentUser.email
-                idTextView.text = auth.currentUser.uid
             }
         }
     }
