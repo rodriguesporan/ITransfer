@@ -17,8 +17,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -39,14 +41,16 @@ typealias BarcodeListener = (result: Task<MutableList<Barcode>>) -> Unit
 class ScanActivity : AppCompatActivity() {
 
     private var imageCapture: ImageCapture? = null
-    private val viewModel: AppViewModel by viewModels()
     private var currentWorkflowState: AppViewModel.WorkflowState =
         AppViewModel.WorkflowState.NOT_STARTED
-    private val userReference: DatabaseReference = Firebase.database.reference.child("users")
+
+    private val viewModel: AppViewModel by viewModels()
+    private val db = Firebase.firestore
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var binding: ActivityScanBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,27 +62,6 @@ class ScanActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        userReference.child("-MYl-NTXttZTSkYnB8c3")
-//            .addListenerForSingleValueEvent() from chache
-//            .addChildEventListener() to override list methods
-//            .addValueEventListener() to observe changes
-            .get()
-            .addOnSuccessListener {
-                val user = it.getValue(User::class.java)
-                if (user != null) {
-                    viewModel.setUser(user)
-                    try {
-                        val bitmap = BarcodeEncoder()
-                            .encodeBitmap(user.phone, BarcodeFormat.QR_CODE, 800, 800)
-
-                        val imageView = findViewById<ImageView>(R.id.qr_code)
-                        imageView.setImageBitmap(bitmap)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "QR code generation failed", e)
-                    }
-                }
-            }
-
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -86,6 +69,13 @@ class ScanActivity : AppCompatActivity() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        auth = Firebase.auth
+    }
+
+    override fun onStart() {
+        super.onStart()
+        updateUI(auth.currentUser)
     }
 
     override fun onResume() {
@@ -118,6 +108,33 @@ class ScanActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+    }
+
+    private fun updateUI(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            db.collection("users")
+                .whereEqualTo("googleUid", currentUser.uid)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        val user: User = documents.elementAt(0).toObject(User::class.java)
+                        Log.d(TAG, "User:${user.toString()}")
+                        viewModel.setUser(user)
+                        try {
+                            val bitmap = BarcodeEncoder()
+                                .encodeBitmap(user.uid, BarcodeFormat.QR_CODE, 800, 800)
+
+                            val imageView = findViewById<ImageView>(R.id.qr_code)
+                            imageView.setImageBitmap(bitmap)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "QR code generation failed", e)
+                        }
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting user: ", exception)
+                }
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

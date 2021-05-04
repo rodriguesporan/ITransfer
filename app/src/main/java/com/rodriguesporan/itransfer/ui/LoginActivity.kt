@@ -14,9 +14,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.R
+import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityLoginBinding
+import java.sql.Timestamp
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -24,6 +30,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +56,38 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
+        updateUI(auth.currentUser)
     }
 
-    private fun updateUI(user: FirebaseUser?) {
-        if (user != null) {
-            startMainActivity()
+    private fun updateUI(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            db.collection("users")
+                .whereEqualTo("googleUid", currentUser.uid)
+                .get()
+                .addOnSuccessListener {
+                    if (it.isEmpty) {
+                        val newUserRef: DocumentReference = db.collection("users").document()
+                        val user = User(
+                            newUserRef.id,
+                            currentUser.uid,
+                            currentUser.displayName,
+                            currentUser.email,
+                            currentUser.phoneNumber,
+                            currentUser.photoUrl.toString(),
+                            1500.0,
+                            Date()
+                        )
+
+                        newUserRef.set(user)
+                            .addOnSuccessListener {
+                                Log.d(TAG, "DocumentSnapshot successfully written!")
+                                startMainActivity()
+                            }
+                            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting user: ", exception)
+                }
         }
     }
 
