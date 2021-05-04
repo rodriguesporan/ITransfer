@@ -6,7 +6,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="appViewModel"
             type="com.rodriguesporan.itransfer.data.AppViewModel" />
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        app:listAdapter="@{viewModel.transactions}"
+        app:listAdapter="@{appViewModel.transactions}"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/fragment_statement_item" />
 </layout>

@@ -3,9 +3,6 @@ package com.rodriguesporan.itransfer.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.media.AudioManager
-import android.media.ToneGenerator
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -20,10 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.tasks.Task
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.mlkit.vision.barcode.Barcode

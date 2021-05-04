@@ -18,10 +18,12 @@ class StatementFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentStatementBinding.inflate(inflater, container, false)
 
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = TransactionAdapter()
+        binding.apply {
+            lifecycleOwner = this@StatementFragment
+            appViewModel = viewModel
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = TransactionAdapter()
+        }
 
         return binding.root
     }
