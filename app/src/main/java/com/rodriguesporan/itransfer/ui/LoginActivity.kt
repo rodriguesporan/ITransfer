@@ -14,14 +14,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityLoginBinding
-import java.sql.Timestamp
 import java.util.*
 
 

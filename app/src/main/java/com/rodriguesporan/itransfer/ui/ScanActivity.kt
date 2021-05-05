@@ -32,6 +32,7 @@ import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.data.AppViewModel
 import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityScanBinding
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -119,7 +120,6 @@ class ScanActivity : AppCompatActivity() {
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
                         val user: User = documents.elementAt(0).toObject(User::class.java)
-                        Log.d(TAG, "User:${user.toString()}")
                         viewModel.setUser(user)
                         try {
                             val bitmap = BarcodeEncoder()
@@ -172,18 +172,17 @@ class ScanActivity : AppCompatActivity() {
                         if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
                             viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
                             cameraProvider.unbindAll()
-                            Log.d(TAG, "Barcodelist size: ${list.size}")
-                            // TODO: when call firebase to check with the user exists put SEARCHING
+                            // TODO: open a loading UI component and then check if rawValue is a valid UID
+                            val receiverUid: String = list[0].rawValue
+                            // TODO: call firebase to check if the user exists and then put WorkflowState to SEARCHING
                             viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
-                            // TODO: after firebase search and confirmation that the user is not the logged in put CONFIRMED
+                            // TODO: after user's check put WorkflowState to CONFIRMED
                             viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
-                            /**
-                             * TODO: open a new activity
-                             * create a list of status to identify the scanner workflow
-                             * when receive a valid codelist open a loaderComponentUI
-                             * after that open the new activity
-                             */
-                            startActivity(Intent(this, SendPaymentActivity::class.java))
+
+                            val intent = Intent(this, SendPaymentActivity::class.java)
+                                    .putExtra("RECEIVER_UID", receiverUid)
+                                    .putExtra("SENDER_UID", viewModel.user.value?.uid)
+                            startActivity(intent)
                         }
                     }
                 })

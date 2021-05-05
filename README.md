@@ -1,9 +1,12 @@
 # ITransfer
 
+* View Binding
 * Data Binding
 * Binding Adapter
 * ViewModel
-* Firebase
+* Firebase Firestore Database
+* Firebase Authentication
+* Google Identity
 * ListAdapter
 * Bottom Sheet
 * Material Design
@@ -11,7 +14,8 @@
 * CameraX
 * Machine Learning Kit
 * Vision APIs
-* Barcode scanning
+* Barcode scanning ZXing
+* Coil
 
 ---
 

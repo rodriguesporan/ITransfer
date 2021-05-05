@@ -21,7 +21,7 @@ import com.rodriguesporan.itransfer.data.User
 class StatementFragment : Fragment() {
 
     private val viewModel: AppViewModel by activityViewModels()
-    private lateinit var db: FirebaseFirestore
+    private val db = Firebase.firestore
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentStatementBinding.inflate(inflater, container, false)
@@ -36,12 +36,6 @@ class StatementFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        db = Firebase.firestore
-    }
-
     override fun onStart() {
         super.onStart()
 
@@ -51,7 +45,7 @@ class StatementFragment : Fragment() {
     private fun updateUI(user: User?) {
         if (user != null) {
             db.collection("transactions")
-                    .whereEqualTo("senderId", user.uid)
+                    .whereArrayContains("usersUid", user.uid!!)
                     .get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {

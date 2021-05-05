@@ -10,9 +10,10 @@ import java.util.*
 data class Transaction(
         var uid: String? = null,
         var amount: Double? = null,
-        var senderId: String? = null,
-        var receiverId: String? = null,
-        var createdAt: Date? = null
+        var senderUid: String? = null,
+        var receiverUid: String? = null,
+        var createdAt: Date? = null,
+        var usersUid: ArrayList<String> = arrayListOf()
 ) {
     fun formatCreatedAt(): String {
         return if (createdAt == null) {
