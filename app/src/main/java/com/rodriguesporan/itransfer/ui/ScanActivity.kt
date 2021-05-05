@@ -32,7 +32,6 @@ import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.data.AppViewModel
 import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityScanBinding
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
