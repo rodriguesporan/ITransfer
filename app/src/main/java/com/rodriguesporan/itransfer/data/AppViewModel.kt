@@ -10,8 +10,8 @@ class AppViewModel: ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    private val _transactions = MutableLiveData<MutableList<Transaction>>()
-    val transactions: LiveData<MutableList<Transaction>> get() = _transactions
+    private val _transactions = MutableLiveData<List<Transaction>>()
+    val transactions: LiveData<List<Transaction>> get() = _transactions
 
     private val _workflowState = MutableLiveData<WorkflowState>()
     val workflowState: LiveData<WorkflowState> get() = _workflowState
@@ -20,7 +20,7 @@ class AppViewModel: ViewModel() {
     val detectedBarcode: LiveData<Barcode> get() = _detectedBarcode
 
     init {
-        getTransactions()
+        _transactions.value = mutableListOf()
     }
 
     /**
@@ -46,15 +46,7 @@ class AppViewModel: ViewModel() {
         _detectedBarcode.value = detectedBarcode
     }
 
-    fun addTransaction(transaction: Transaction) {
-        _transactions.value?.add(transaction)
-    }
-
-    fun addTransactions(transactions: MutableList<Transaction>) {
-        _transactions.value?.addAll(transactions)
-    }
-
-    private fun getTransactions() {
-        _transactions.value = mutableListOf()
+    fun setTransactions(transactions: List<Transaction>) {
+        _transactions.value = transactions
     }
 }

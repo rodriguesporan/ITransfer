@@ -79,19 +79,6 @@ class MainActivity : AppCompatActivity() {
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting user: ", exception)
                 }
-
-            db.collection("transactions")
-                .whereEqualTo("senderId", currentUser.uid)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        for (document in documents) {
-                            viewModel.addTransaction(document.toObject(Transaction::class.java))
-                        }
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting user: ", exception)
-                }
         }
     }
 
