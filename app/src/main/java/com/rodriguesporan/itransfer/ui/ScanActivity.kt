@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -127,11 +128,23 @@ class ScanActivity : AppCompatActivity() {
                             val imageView = findViewById<ImageView>(R.id.qr_code)
                             imageView.setImageBitmap(bitmap)
                         } catch (e: Exception) {
-                            Log.e(TAG, "QR code generation failed", e)
+                            Log.e(TAG, "QR code generation failed: ", e)
+                            Snackbar.make(
+                                binding.coordinatorRootLayout,
+                                "QR code generation failed",
+                                Snackbar.LENGTH_LONG
+                            ).setBackgroundTint(resources.getColor(R.color.red_900))
+                                .setTextColor(resources.getColor(R.color.white)).show()
                         }
                     }
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting user: ", exception)
+                    Snackbar.make(
+                        binding.coordinatorRootLayout,
+                        "Error getting user",
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(resources.getColor(R.color.red_900))
+                        .setTextColor(resources.getColor(R.color.white)).show()
                 }
         }
     }
@@ -166,24 +179,34 @@ class ScanActivity : AppCompatActivity() {
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
             .build()
             .also {
-                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { result ->
-                    result.addOnSuccessListener { list: MutableList<Barcode> ->
-                        if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
-                            viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
-                            cameraProvider.unbindAll()
-                            // TODO: open a loading UI component and then check if rawValue is a valid UID
-                            val receiverUid: String = list[0].rawValue
-                            // TODO: call firebase to check if the user exists and then put WorkflowState to SEARCHING
-                            viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
-                            // TODO: after user's check put WorkflowState to CONFIRMED
-                            viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
+                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { task ->
+                    task
+                        .addOnSuccessListener { list: MutableList<Barcode> ->
+                            if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
+                                viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
+                                cameraProvider.unbindAll()
+                                // TODO: open a loading UI component and then check if rawValue is a valid UID
+                                val receiverUid: String = list[0].rawValue
+                                // TODO: call firebase to check if the user exists and then put WorkflowState to SEARCHING
+                                viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
+                                // TODO: after user's check put WorkflowState to CONFIRMED
+                                viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
 
-                            val intent = Intent(this, SendPaymentActivity::class.java)
+                                val intent = Intent(this, SendPaymentActivity::class.java)
                                     .putExtra("RECEIVER_UID", receiverUid)
                                     .putExtra("SENDER_UID", viewModel.user.value?.uid)
-                            startActivity(intent)
+                                startActivity(intent)
+                            }
                         }
-                    }
+                        .addOnFailureListener { exception ->
+                            Log.e(TAG, "Scanner process failed: ", exception)
+                            Snackbar.make(
+                                binding.coordinatorRootLayout,
+                                "Scanner process failed",
+                                Snackbar.LENGTH_LONG
+                            ).setBackgroundTint(resources.getColor(R.color.red_900))
+                                .setTextColor(resources.getColor(R.color.white)).show()
+                        }
                 })
             }
 
@@ -202,6 +225,12 @@ class ScanActivity : AppCompatActivity() {
             )
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
+            Snackbar.make(
+                binding.coordinatorRootLayout,
+                "Use case binding failed",
+                Snackbar.LENGTH_LONG
+            ).setBackgroundTint(resources.getColor(R.color.red_900))
+                .setTextColor(resources.getColor(R.color.white)).show()
         }
     }
 
@@ -214,7 +243,6 @@ class ScanActivity : AppCompatActivity() {
                 BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
             val scanner = BarcodeScanning.getClient(options)
             val result: Task<MutableList<Barcode>> = scanner.process(inputImage)
-                .addOnFailureListener { e -> Log.e(TAG, e.toString()) }
                 .addOnCompleteListener {
                     imageProxy.image?.close()
                     imageProxy.close()

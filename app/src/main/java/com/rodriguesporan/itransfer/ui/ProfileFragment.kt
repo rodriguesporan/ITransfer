@@ -14,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.databinding.FragmentProfileBinding
@@ -39,7 +38,6 @@ class ProfileFragment : Fragment() {
         binding.apply { signOutButton.setOnClickListener { signOut() } }
         binding.apply { disconnectButton.setOnClickListener { revokeAccess() } }
 
-        // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -47,35 +45,24 @@ class ProfileFragment : Fragment() {
 
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
-        // Initialize Firebase Auth
         auth = Firebase.auth
     }
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
+
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
 
     private fun signOut() {
-        // Firebase sign out
         auth.signOut()
-
-        // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(requireActivity()) {
-            updateUI(null)
-        }
+        googleSignInClient.signOut().addOnCompleteListener(requireActivity()) { updateUI(null) }
     }
 
     private fun revokeAccess() {
-        // Firebase sign out
         auth.signOut()
-
-        // Google revoke access
-        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) {
-            updateUI(null)
-        }
+        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) { updateUI(null) }
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -102,9 +89,5 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "ITransfer"
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.databinding.DataBindingUtil
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -54,8 +55,6 @@ class SendPaymentActivity : AppCompatActivity() {
 
         newTransactionRef.set(transaction)
                 .addOnSuccessListener {
-                    Log.d(TAG, "DocumentSnapshot successfully written!")
-
                     val senderDocRef =  db.collection("users").document(senderUid)
                     db.runTransaction { transaction ->
                         val snapshot = transaction.get(senderDocRef)
@@ -64,8 +63,15 @@ class SendPaymentActivity : AppCompatActivity() {
                         transaction.update(senderDocRef, "lastWeekTransactionsUid", FieldValue.arrayUnion(newTransactionRef.id))
 
                         null
-                    }.addOnSuccessListener { Log.d(TAG, "Transaction success!") }
-                            .addOnFailureListener { e -> Log.w(TAG, "Transaction failure.", e) }
+                    }.addOnFailureListener { exception ->
+                        Log.w(TAG, "Error writing user: ", exception)
+                        Snackbar.make(
+                            binding.constraintRootLayout,
+                            "Error writing user",
+                            Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(resources.getColor(R.color.red_900))
+                            .setTextColor(resources.getColor(R.color.white)).show()
+                    }
 
                     val receiverDocRef =  db.collection("users").document(receiverUid)
                     db.runTransaction { transaction ->
@@ -74,12 +80,26 @@ class SendPaymentActivity : AppCompatActivity() {
                         transaction.update(receiverDocRef, "lastWeekTransactionsUid", FieldValue.arrayUnion(newTransactionRef.id))
 
                         null
-                    }.addOnSuccessListener { Log.d(TAG, "Transaction success!") }
-                            .addOnFailureListener { e -> Log.w(TAG, "Transaction failure.", e) }
+                    }.addOnFailureListener { exception ->
+                        Log.w(TAG, "Error writing user: ", exception)
+                        Snackbar.make(
+                            binding.constraintRootLayout,
+                            "Error writing user",
+                            Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(resources.getColor(R.color.red_900))
+                            .setTextColor(resources.getColor(R.color.white)).show()
+                    }
 
                     startActivity(Intent(this, PaymentReceiptActivity::class.java))
+                }.addOnFailureListener { exception ->
+                    Log.w(TAG, "Error writing transaction: ", exception)
+                    Snackbar.make(
+                        binding.constraintRootLayout,
+                        "Error writing transaction",
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(resources.getColor(R.color.red_900))
+                        .setTextColor(resources.getColor(R.color.white)).show()
                 }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
     private fun updateUI() {
@@ -100,6 +120,12 @@ class SendPaymentActivity : AppCompatActivity() {
                         }
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting user: ", exception)
+                        Snackbar.make(
+                            binding.constraintRootLayout,
+                            "Error getting user",
+                            Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(resources.getColor(R.color.red_900))
+                            .setTextColor(resources.getColor(R.color.white)).show()
                     }
         }
     }

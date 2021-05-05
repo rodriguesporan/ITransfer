@@ -3,7 +3,6 @@ package com.rodriguesporan.itransfer.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.mlkit.vision.barcode.Barcode
 
 class AppViewModel: ViewModel() {
 
@@ -15,9 +14,6 @@ class AppViewModel: ViewModel() {
 
     private val _workflowState = MutableLiveData<WorkflowState>()
     val workflowState: LiveData<WorkflowState> get() = _workflowState
-
-    private val _detectedBarcode = MutableLiveData<Barcode>()
-    val detectedBarcode: LiveData<Barcode> get() = _detectedBarcode
 
     init {
         _transactions.value = mutableListOf()
@@ -40,10 +36,6 @@ class AppViewModel: ViewModel() {
 
     fun setWorkflowState(workflowState: WorkflowState) {
         _workflowState.value = workflowState
-    }
-
-    fun setDetectedBarcode(detectedBarcode: Barcode) {
-        _detectedBarcode.value = detectedBarcode
     }
 
     fun setTransactions(transactions: List<Transaction>) {

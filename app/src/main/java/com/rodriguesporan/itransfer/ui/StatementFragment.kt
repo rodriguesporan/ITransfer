@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.adapter.TransactionAdapter
 import com.rodriguesporan.itransfer.databinding.FragmentStatementBinding
 import com.rodriguesporan.itransfer.data.AppViewModel
@@ -20,11 +22,13 @@ import com.rodriguesporan.itransfer.data.User
 
 class StatementFragment : Fragment() {
 
+    private lateinit var binding: FragmentStatementBinding
+
     private val viewModel: AppViewModel by activityViewModels()
     private val db = Firebase.firestore
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentStatementBinding.inflate(inflater, container, false)
+        binding = FragmentStatementBinding.inflate(inflater, container, false)
 
         binding.apply {
             lifecycleOwner = this@StatementFragment
@@ -55,7 +59,13 @@ class StatementFragment : Fragment() {
                             viewModel.setTransactions(transactions)
                         }
                     }.addOnFailureListener { exception ->
-                        Log.w(TAG, "Error getting user: ", exception)
+                        Log.w(TAG, "Error getting transactions: ", exception)
+                        Snackbar.make(
+                            binding.recyclerView,
+                            "Error getting transactions",
+                            Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(resources.getColor(R.color.red_900))
+                            .setTextColor(resources.getColor(R.color.white)).show()
                     }
         }
     }
