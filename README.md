@@ -1,5 +1,9 @@
 # ITransfer
 
+<img src="https://raw.githubusercontent.com/rodriguesporan/ITransfer/main/images/app-screen-mock-up.jpg">
+
+---
+
 * View Binding
 * Data Binding
 * Binding Adapter
@@ -16,7 +20,3 @@
 * Vision APIs
 * Barcode scanning ZXing
 * Coil
-
----
-
-<img src="https://raw.githubusercontent.com/rodriguesporan/ITransfer/main/images/app-screen-mock-up.jpg">
