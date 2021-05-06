@@ -37,7 +37,8 @@
         <activity
             android:name=".ui.SendPaymentActivity"
             android:label="@string/send_payment"
-            android:parentActivityName=".ui.ScanActivity">
+            android:parentActivityName=".ui.ScanActivity"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rodriguesporan.itransfer.ui.ScanActivity" />
