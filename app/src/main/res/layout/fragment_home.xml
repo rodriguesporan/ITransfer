@@ -51,6 +51,7 @@
                 android:id="@+id/transferReceive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20sp"
                 android:text="@string/transfer_receive"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
