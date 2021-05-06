@@ -42,7 +42,8 @@ class SendPaymentActivity : AppCompatActivity() {
     }
 
     fun pay() {
-        val transactionAmount: Double = binding.amountTextInputEditText.text.toString().toDoubleOrNull() ?: 0.0
+        val transactionAmount: Double = binding.amountTextInputEditText.text.toString().toDoubleOrNull()
+                ?: 0.0
         val newTransactionRef: DocumentReference = db.collection("transactions").document()
         val transaction = Transaction(
                 newTransactionRef.id,
@@ -55,7 +56,7 @@ class SendPaymentActivity : AppCompatActivity() {
 
         newTransactionRef.set(transaction)
                 .addOnSuccessListener {
-                    val senderDocRef =  db.collection("users").document(senderUid)
+                    val senderDocRef = db.collection("users").document(senderUid)
                     db.runTransaction { transaction ->
                         val snapshot = transaction.get(senderDocRef)
                         val newTotal = snapshot.getDouble("total")?.minus(transactionAmount)
@@ -66,16 +67,15 @@ class SendPaymentActivity : AppCompatActivity() {
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error writing user: ", exception)
                         Snackbar.make(
-                            binding.constraintRootLayout,
-                            "Error writing user",
-                            Snackbar.LENGTH_LONG
+                                binding.constraintRootLayout,
+                                "Error writing user",
+                                Snackbar.LENGTH_LONG
                         ).setBackgroundTint(resources.getColor(R.color.red_900))
-                            .setTextColor(resources.getColor(R.color.white)).show()
+                                .setTextColor(resources.getColor(R.color.white)).show()
                     }
 
-                    val receiverDocRef =  db.collection("users").document(receiverUid)
+                    val receiverDocRef = db.collection("users").document(receiverUid)
                     db.runTransaction { transaction ->
-                        val snapshot = transaction.get(receiverDocRef)
                         transaction.update(receiverDocRef, "total", FieldValue.increment(transactionAmount))
                         transaction.update(receiverDocRef, "lastWeekTransactionsUid", FieldValue.arrayUnion(newTransactionRef.id))
 
@@ -83,22 +83,26 @@ class SendPaymentActivity : AppCompatActivity() {
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error writing user: ", exception)
                         Snackbar.make(
-                            binding.constraintRootLayout,
-                            "Error writing user",
-                            Snackbar.LENGTH_LONG
+                                binding.constraintRootLayout,
+                                "Error writing user",
+                                Snackbar.LENGTH_LONG
                         ).setBackgroundTint(resources.getColor(R.color.red_900))
-                            .setTextColor(resources.getColor(R.color.white)).show()
+                                .setTextColor(resources.getColor(R.color.white)).show()
                     }
 
-                    startActivity(Intent(this, PaymentReceiptActivity::class.java))
+                    val intent = Intent(this, PaymentReceiptActivity::class.java)
+                            .putExtra("TRANSACTION_UID", newTransactionRef.id)
+                            .putExtra("RECEIVER_UID", receiverUid)
+                            .putExtra("SENDER_UID", senderUid)
+                    startActivity(intent)
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error writing transaction: ", exception)
                     Snackbar.make(
-                        binding.constraintRootLayout,
-                        "Error writing transaction",
-                        Snackbar.LENGTH_LONG
+                            binding.constraintRootLayout,
+                            "Error writing transaction",
+                            Snackbar.LENGTH_LONG
                     ).setBackgroundTint(resources.getColor(R.color.red_900))
-                        .setTextColor(resources.getColor(R.color.white)).show()
+                            .setTextColor(resources.getColor(R.color.white)).show()
                 }
     }
 
@@ -121,11 +125,11 @@ class SendPaymentActivity : AppCompatActivity() {
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting user: ", exception)
                         Snackbar.make(
-                            binding.constraintRootLayout,
-                            "Error getting user",
-                            Snackbar.LENGTH_LONG
+                                binding.constraintRootLayout,
+                                "Error getting user",
+                                Snackbar.LENGTH_LONG
                         ).setBackgroundTint(resources.getColor(R.color.red_900))
-                            .setTextColor(resources.getColor(R.color.white)).show()
+                                .setTextColor(resources.getColor(R.color.white)).show()
                     }
         }
     }

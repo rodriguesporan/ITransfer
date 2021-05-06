@@ -6,7 +6,7 @@
     <string name="scanner">Scanner</string>
     <string name="transfer_receive">Transfer or receive ></string>
     <string name="your_assets_today">Your assets today:</string>
-    <string name="assets">M§ %1$s</string>
+    <string name="assets">A§ %1$s</string>
     <string name="updated_at">Updated at: %1$s</string>
     <string name="your_qr_code">This is your QR code</string>
     <string name="show_qr_code">Show it to receive payments</string>
