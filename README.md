@@ -1,5 +1,7 @@
 # ITransfer
 
+Application to transfer money through digital accounts, using QR code
+
 <img src="https://raw.githubusercontent.com/rodriguesporan/ITransfer/main/images/app-screen-mock-up.jpg">
 
 ---
