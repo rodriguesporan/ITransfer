@@ -43,7 +43,7 @@ class ScanActivity : AppCompatActivity() {
 
     private var imageCapture: ImageCapture? = null
     private var currentWorkflowState: AppViewModel.WorkflowState =
-        AppViewModel.WorkflowState.NOT_STARTED
+            AppViewModel.WorkflowState.NOT_STARTED
 
     private val viewModel: AppViewModel by viewModels()
     private val db = Firebase.firestore
@@ -90,9 +90,9 @@ class ScanActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -100,7 +100,7 @@ class ScanActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT)
-                    .show()
+                        .show()
             }
         }
     }
@@ -114,38 +114,38 @@ class ScanActivity : AppCompatActivity() {
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             db.collection("users")
-                .whereEqualTo("googleUid", currentUser.uid)
-                .limit(1)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val user: User = documents.elementAt(0).toObject(User::class.java)
-                        viewModel.setUser(user)
-                        try {
-                            val bitmap = BarcodeEncoder()
-                                .encodeBitmap(user.uid, BarcodeFormat.QR_CODE, 800, 800)
+                    .whereEqualTo("googleUid", currentUser.uid)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if (!documents.isEmpty) {
+                            val user: User = documents.elementAt(0).toObject(User::class.java)
+                            viewModel.setUser(user)
+                            try {
+                                val bitmap = BarcodeEncoder()
+                                        .encodeBitmap("${user.uid}::${user.displayName}", BarcodeFormat.QR_CODE, 800, 800)
 
-                            val imageView = findViewById<ImageView>(R.id.qr_code)
-                            imageView.setImageBitmap(bitmap)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "QR code generation failed: ", e)
-                            Snackbar.make(
-                                binding.coordinatorRootLayout,
-                                "QR code generation failed",
-                                Snackbar.LENGTH_LONG
-                            ).setBackgroundTint(resources.getColor(R.color.red_900))
-                                .setTextColor(resources.getColor(R.color.white)).show()
+                                val imageView = findViewById<ImageView>(R.id.qr_code)
+                                imageView.setImageBitmap(bitmap)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "QR code generation failed: ", e)
+                                Snackbar.make(
+                                        binding.coordinatorRootLayout,
+                                        "QR code generation failed",
+                                        Snackbar.LENGTH_LONG
+                                ).setBackgroundTint(resources.getColor(R.color.red_900))
+                                        .setTextColor(resources.getColor(R.color.white)).show()
+                            }
                         }
+                    }.addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting user: ", exception)
+                        Snackbar.make(
+                                binding.coordinatorRootLayout,
+                                "Error getting user",
+                                Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(resources.getColor(R.color.red_900))
+                                .setTextColor(resources.getColor(R.color.white)).show()
                     }
-                }.addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting user: ", exception)
-                    Snackbar.make(
-                        binding.coordinatorRootLayout,
-                        "Error getting user",
-                        Snackbar.LENGTH_LONG
-                    ).setBackgroundTint(resources.getColor(R.color.red_900))
-                        .setTextColor(resources.getColor(R.color.white)).show()
-                }
         }
     }
 
@@ -160,77 +160,82 @@ class ScanActivity : AppCompatActivity() {
          * */
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener(
-            Runnable {
-                val cameraProvider = cameraProviderFuture.get()
-                bindPreview(cameraProvider)
-            },
-            ContextCompat.getMainExecutor(this)
+                Runnable {
+                    val cameraProvider = cameraProviderFuture.get()
+                    bindPreview(cameraProvider)
+                },
+                ContextCompat.getMainExecutor(this)
         ) // This returns an Executor that runs on the main thread
         viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTING)
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
         var preview: Preview = Preview.Builder()
-            .build()
-            .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
+                .build()
+                .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
 
         imageCapture = ImageCapture.Builder().build()
         val imageAnalyzer = ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
-            .build()
-            .also {
-                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { task ->
-                    task
-                        .addOnSuccessListener { list: MutableList<Barcode> ->
-                            if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
-                                viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
-                                cameraProvider.unbindAll()
-                                // TODO: open a loading UI component and then check if rawValue is a valid UID
-                                val receiverUid: String = list[0].rawValue
-                                // TODO: call firebase to check if the user exists and then put WorkflowState to SEARCHING
-                                viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
-                                // TODO: after user's check put WorkflowState to CONFIRMED
-                                viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
+                .build()
+                .also {
+                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { task ->
+                        task
+                                .addOnSuccessListener { list: MutableList<Barcode> ->
+                                    if (list?.size > 0 && viewModel.workflowState.value == AppViewModel.WorkflowState.DETECTING) {
+                                        viewModel.setWorkflowState(AppViewModel.WorkflowState.DETECTED)
+                                        cameraProvider.unbindAll()
+                                        // TODO: open a loading UI component and then check if rawValue is a valid UID
+                                        val rawValues: List<String> = list[0]?.rawValue.split("::")
+                                        val receiverUid = rawValues[0]
+                                        val receiverDisplayName = rawValues[1]
+                                        // TODO: call firebase to check if the user exists and then put WorkflowState to SEARCHING
+                                        viewModel.setWorkflowState(AppViewModel.WorkflowState.SEARCHING)
+                                        // TODO: after user's check put WorkflowState to CONFIRMED
+                                        viewModel.setWorkflowState(AppViewModel.WorkflowState.CONFIRMED)
 
-                                val intent = Intent(this, SendPaymentActivity::class.java)
-                                    .putExtra("RECEIVER_UID", receiverUid)
-                                    .putExtra("SENDER_UID", viewModel.user.value?.uid)
-                                startActivity(intent)
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e(TAG, "Scanner process failed: ", exception)
-                            Snackbar.make(
-                                binding.coordinatorRootLayout,
-                                "Scanner process failed",
-                                Snackbar.LENGTH_LONG
-                            ).setBackgroundTint(resources.getColor(R.color.red_900))
-                                .setTextColor(resources.getColor(R.color.white)).show()
-                        }
-                })
-            }
+                                        val intent = Intent(this, SendPaymentActivity::class.java)
+                                                .putExtra("RECEIVER_UID", receiverUid)
+                                                .putExtra("RECEIVER_DISPLAY_NAME", receiverDisplayName)
+                                                .putExtra("SENDER_UID", viewModel.user.value?.uid)
+                                                .putExtra("SENDER_DISPLAY_NAME", viewModel.user.value?.displayName)
+
+                                        startActivity(intent)
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e(TAG, "Scanner process failed: ", exception)
+                                    Snackbar.make(
+                                            binding.coordinatorRootLayout,
+                                            "Scanner process failed",
+                                            Snackbar.LENGTH_LONG
+                                    ).setBackgroundTint(resources.getColor(R.color.red_900))
+                                            .setTextColor(resources.getColor(R.color.white)).show()
+                                }
+                    })
+                }
 
         var cameraSelector: CameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
 
         try {
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(
-                this as LifecycleOwner,
-                cameraSelector,
-                preview,
-                imageCapture,
-                imageAnalyzer
+                    this as LifecycleOwner,
+                    cameraSelector,
+                    preview,
+                    imageCapture,
+                    imageAnalyzer
             )
         } catch (e: Exception) {
             Log.e(TAG, "Use case binding failed", e)
             Snackbar.make(
-                binding.coordinatorRootLayout,
-                "Use case binding failed",
-                Snackbar.LENGTH_LONG
+                    binding.coordinatorRootLayout,
+                    "Use case binding failed",
+                    Snackbar.LENGTH_LONG
             ).setBackgroundTint(resources.getColor(R.color.red_900))
-                .setTextColor(resources.getColor(R.color.white)).show()
+                    .setTextColor(resources.getColor(R.color.white)).show()
         }
     }
 
@@ -238,15 +243,15 @@ class ScanActivity : AppCompatActivity() {
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun analyze(imageProxy: ImageProxy) {
             val inputImage =
-                InputImage.fromMediaImage(imageProxy.image, imageProxy.imageInfo.rotationDegrees)
+                    InputImage.fromMediaImage(imageProxy.image, imageProxy.imageInfo.rotationDegrees)
             val options =
-                BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
+                    BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
             val scanner = BarcodeScanning.getClient(options)
             val result: Task<MutableList<Barcode>> = scanner.process(inputImage)
-                .addOnCompleteListener {
-                    imageProxy.image?.close()
-                    imageProxy.close()
-                }
+                    .addOnCompleteListener {
+                        imageProxy.image?.close()
+                        imageProxy.close()
+                    }
 
             listener(result)
         }

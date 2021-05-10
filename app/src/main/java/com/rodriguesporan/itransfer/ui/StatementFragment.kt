@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.rodriguesporan.itransfer.R
@@ -46,26 +44,28 @@ class StatementFragment : Fragment() {
         updateUI(viewModel.user.value)
     }
 
-    private fun updateUI(user: User?) {
-        if (user != null) {
+    private fun updateUI(currentUser: User?) {
+        if (currentUser != null) {
             db.collection("transactions")
-                    .whereArrayContains("usersUid", user.uid!!)
+                    .whereArrayContains("usersUid", currentUser.uid!!)
                     .get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
-                            val transactions: List<Transaction> = documents.mapNotNull {
-                                it.toObject(Transaction::class.java)
+                            val transactions: List<Transaction> = documents.mapNotNull { queryDocumentSnapshot ->
+                                queryDocumentSnapshot.toObject(Transaction::class.java).also {
+                                    it.setCurrentUserUid(currentUser.uid!!)
+                                }
                             }
                             viewModel.setTransactions(transactions)
                         }
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting transactions: ", exception)
                         Snackbar.make(
-                            binding.recyclerView,
-                            "Error getting transactions",
-                            Snackbar.LENGTH_LONG
+                                binding.recyclerView,
+                                "Error getting transactions",
+                                Snackbar.LENGTH_LONG
                         ).setBackgroundTint(resources.getColor(R.color.red_900))
-                            .setTextColor(resources.getColor(R.color.white)).show()
+                                .setTextColor(resources.getColor(R.color.white)).show()
                     }
         }
     }

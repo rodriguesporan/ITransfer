@@ -9,21 +9,32 @@
             type="com.rodriguesporan.itransfer.data.Transaction" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="64dp">
 
         <TextView
             android:id="@+id/date_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:paddingTop="16dp"
             android:text="@{transaction.formatCreatedAt()}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/amount_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingEnd="16dp"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceSubtitle1"/>
+
+        <TextView
+            android:id="@+id/display_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_text_view"
+            android:layout_gravity="center_vertical"
+            android:text="@{transaction.displayName()}"
+            android:paddingEnd="16dp"
+            android:maxLines="2"
+            android:textAppearance="?attr/textAppearanceBody2"/>
 
         <TextView
             android:id="@+id/amount_text_view"
@@ -31,9 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@{transaction.formatAmount()}"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/date_text_view"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 </layout>

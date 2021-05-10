@@ -29,7 +29,7 @@
         <activity
             android:name=".ui.PaymentReceiptActivity"
             android:label="@string/payment_receipt"
-            android:parentActivityName=".ui.SendPaymentActivity">
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rodriguesporan.itransfer.ui.SendPaymentActivity" />

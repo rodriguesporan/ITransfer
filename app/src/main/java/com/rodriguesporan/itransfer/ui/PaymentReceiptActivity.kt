@@ -3,9 +3,6 @@ package com.rodriguesporan.itransfer.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.databinding.DataBindingUtil
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -13,7 +10,6 @@ import com.rodriguesporan.itransfer.R
 import com.rodriguesporan.itransfer.data.Transaction
 import com.rodriguesporan.itransfer.data.User
 import com.rodriguesporan.itransfer.databinding.ActivityPaymentReceiptBinding
-import com.rodriguesporan.itransfer.databinding.ActivitySendPaymentBinding
 
 class PaymentReceiptActivity : AppCompatActivity() {
 

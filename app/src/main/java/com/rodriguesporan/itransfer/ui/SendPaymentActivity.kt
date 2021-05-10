@@ -22,7 +22,9 @@ class SendPaymentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySendPaymentBinding
     private lateinit var receiverUid: String
+    private lateinit var receiverDisplayName: String
     private lateinit var senderUid: String
+    private lateinit var senderDisplayName: String
 
     private val db = Firebase.firestore
 
@@ -36,7 +38,10 @@ class SendPaymentActivity : AppCompatActivity() {
 
         if (intent.extras != null) {
             receiverUid = intent.extras!!.get("RECEIVER_UID").toString()
+            receiverDisplayName = intent.extras!!.get("RECEIVER_DISPLAY_NAME").toString()
             senderUid = intent.extras!!.get("SENDER_UID").toString()
+            senderDisplayName = intent.extras!!.get("SENDER_DISPLAY_NAME").toString()
+
             updateUI()
         }
     }
@@ -49,7 +54,9 @@ class SendPaymentActivity : AppCompatActivity() {
                 newTransactionRef.id,
                 transactionAmount,
                 senderUid,
+                senderDisplayName,
                 receiverUid,
+                receiverDisplayName,
                 Date(),
                 arrayListOf(senderUid, receiverUid)
         )
