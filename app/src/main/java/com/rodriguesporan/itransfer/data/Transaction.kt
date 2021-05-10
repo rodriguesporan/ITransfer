@@ -5,6 +5,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 @IgnoreExtraProperties
 data class Transaction(
@@ -23,11 +24,11 @@ data class Transaction(
         currentUserUid = uid
     }
 
-    fun formatCreatedAt(): String {
+    fun formatCreatedAt(pattern: String? = null): String {
         return if (createdAt == null) {
             ""
         } else {
-            SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(createdAt)
+            SimpleDateFormat(pattern ?: "yyyy/MM/dd HH:mm:ss").format(createdAt)
         }
     }
 
@@ -40,6 +41,12 @@ data class Transaction(
         } else {
             df.format(amount!!)
         }
+    }
+
+    fun signal(): String = when (currentUserUid) {
+        senderUid -> "-"
+        receiverUid -> "+"
+        else -> ""
     }
 
     fun displayName(): String = when (currentUserUid) {

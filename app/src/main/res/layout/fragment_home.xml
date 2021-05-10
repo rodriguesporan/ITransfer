@@ -44,7 +44,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/yourAssetsToday"
-                android:text="@{@string/assets(appViewModel.user.formatAmount())}"
+                android:text="@{@string/prefix_currency_symbol(appViewModel.user.formatAmount())}"
                 />
 
             <com.google.android.material.button.MaterialButton

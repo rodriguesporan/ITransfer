@@ -48,7 +48,7 @@ class PaymentReceiptActivity : AppCompatActivity() {
                         if (documentSnapshot.exists()) {
                             val transaction: Transaction? = documentSnapshot.toObject(Transaction::class.java)
                             binding.dateTextView.text = transaction?.formatCreatedAt()
-                            binding.amountTextView.text = resources.getString(R.string.assets, transaction?.formatAmount())
+                            binding.amountTextView.text = resources.getString(R.string.prefix_currency_symbol, transaction?.formatAmount())
                         }
                     }.addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting transaction: ", exception)

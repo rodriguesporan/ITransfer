@@ -14,8 +14,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         app:listAdapter="@{appViewModel.transactions}"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/fragment_statement_item" />
