@@ -1,6 +1,8 @@
 # ITransfer
 
-Application to transfer money through digital accounts, using QR code
+* Application to make and receive payments through digital accounts
+* Google Identity to sign up with Gmail account
+* Read or share the QR code to make transfers
 
 ---
 
