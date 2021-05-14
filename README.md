@@ -8,6 +8,7 @@ Application to transfer money through digital accounts, using QR code
 
 ---
 
+* Android Jetpack
 * View Binding
 * Data Binding
 * Binding Adapter
