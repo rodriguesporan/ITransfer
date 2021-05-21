@@ -17,3 +17,5 @@ local.properties
 /app/debug
 /app/release
 /app/staging
+/privacy-policy/*
+!/privacy-policy/itransfer-privacy-policy.html
