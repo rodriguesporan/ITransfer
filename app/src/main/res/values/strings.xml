@@ -23,4 +23,8 @@
     <string name="sender">Sender</string>
     <string name="sign_out">Sign out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="notification_title">ITransfer Notification</string>
+    <string name="notification_text_payment_received">You received a new payment</string>
+    <string name="itransfer_notification_channel_id" translatable="false">itransfer_channel</string>
+    <string name="itransfer_notification_channel_name">ITransfer</string>
 </resources>
