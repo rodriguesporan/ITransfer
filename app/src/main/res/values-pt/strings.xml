@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="statement">Extrato</string>
+    <string name="profile">Perfil</string>
+    <string name="scanner">Leitor de Código</string>
+    <string name="transfer_receive">Transferir ou receber ></string>
+    <string name="your_assets_today">Seus ativos hoje:</string>
+    <string name="updated_at">Atualizado em: %1$s</string>
+    <string name="your_qr_code">Este é o seu código QR</string>
+    <string name="show_qr_code">Mostre para receber pagamentos</string>
+    <string name="send_payment">Envie o pagamento</string>
+    <string name="pay">Pagar</string>
+    <string name="payment_receipt">Recibo de pagamento</string>
+    <string name="transaction">Transação</string>
+    <string name="date">Data</string>
+    <string name="receiver">Receptor</string>
+    <string name="sender">Remetente</string>
+    <string name="amount">valor</string>
+    <string name="login">Login</string>
+    <string name="sign_out">logout</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="notification_text_payment_received">Você recebeu um novo pagamento</string>
+    <string name="notification_title">Notificação ITransfer</string>
+</resources>

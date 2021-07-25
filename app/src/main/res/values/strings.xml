@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">ITransfer</string>
-    <string name="home">Home</string>
+    <string name="app_name" translatable="false">ITransfer</string>
+    <string name="home" translatable="false">Home</string>
     <string name="statement">Statement</string>
     <string name="profile">Profile</string>
     <string name="scanner">Scanner</string>
     <string name="transfer_receive">Transfer or receive ></string>
     <string name="your_assets_today">Your assets today:</string>
-    <string name="prefix_currency_symbol">A§ %1$s</string>
-    <string name="sufix_currency_symbol">%1$s A§</string>
+    <string name="prefix_currency_symbol" translatable="false">A§ %1$s</string>
+    <string name="sufix_currency_symbol" translatable="false">%1$s A§</string>
     <string name="updated_at">Updated at: %1$s</string>
     <string name="your_qr_code">This is your QR code</string>
     <string name="show_qr_code">Show it to receive payments</string>
     <string name="send_payment">Send payment</string>
     <string name="pay">Pay</string>
-    <string name="_0_00">0.00</string>
+    <string name="_0_00" translatable="false">0.00</string>
     <string name="amount">amount</string>
     <string name="payment_receipt">Payment Receipt</string>
     <string name="login">Login</string>
@@ -21,10 +21,10 @@
     <string name="date">Date</string>
     <string name="receiver">Receiver</string>
     <string name="sender">Sender</string>
-    <string name="sign_out">Sign out</string>
+    <string name="sign_out">logout</string>
     <string name="disconnect">Disconnect</string>
     <string name="notification_title">ITransfer Notification</string>
     <string name="notification_text_payment_received">You received a new payment</string>
     <string name="itransfer_notification_channel_id" translatable="false">itransfer_channel</string>
-    <string name="itransfer_notification_channel_name">ITransfer</string>
+    <string name="itransfer_notification_channel_name" translatable="false">ITransfer</string>
 </resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="statement">Extracto</string>
+    <string name="profile">Perfil</string>
+    <string name="scanner">Escáner de código</string>
+    <string name="transfer_receive">Transferir o recibir ></string>
+    <string name="your_assets_today">Sus activos hoy:</string>
+    <string name="updated_at">Actualizado en: %1$s</string>
+    <string name="your_qr_code">Este es tu código QR</string>
+    <string name="show_qr_code">Muéstralo para recibir pagos</string>
+    <string name="send_payment">Enviar pago</string>
+    <string name="pay">Pagar</string>
+    <string name="payment_receipt">Recibo de pago</string>
+    <string name="transaction">Transacción</string>
+    <string name="date">Fecha</string>
+    <string name="receiver">Receptor</string>
+    <string name="sender">Remitente</string>
+    <string name="amount">valor</string>
+    <string name="login">Login</string>
+    <string name="sign_out">logout</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="notification_text_payment_received">Recibiste un nuevo pago</string>
+    <string name="notification_title">Notificación de transferencia</string>
+</resources>
